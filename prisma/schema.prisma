@@ -37,7 +37,7 @@ model Class {
   court         Court         
   courtId       Int           
   note          String?
-  isLeave       Boolean     
+  isLeave       Boolean       @default(false)
 }
 
 enum StudentType {
