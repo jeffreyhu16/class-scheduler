@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Student {
+  id            Int           @id @default(autoincrement())
+  type          StudentType
+  name          String
+  dob           DateTime?     @db.Timestamptz(3)
+  phone         String?
+  guardian      String?
+  coaches       Coach[]
+  classes       Class[]
+}
+
+model Coach {
+  id            Int           @id @default(autoincrement())
+  name          String
+  payRate       Int?
+  students      Student[]
+  classes       Class[]
+}
+
+model Class {
+  id            Int           @id @default(autoincrement())
+  type          ClassType
+  startTime     DateTime
+  endTime       DateTime
+  coach         Coach         @relation(fields: [coachId], references: [id])
+  coachId       Int
+  students      Student[]
+  court         Court         
+  courtId       Int           
+  note          String?
+  isLeave       Boolean     
+}
+
+enum StudentType {
+  YOUNG
+  ADULT
+  TRAINING
+}
+
+enum ClassType {
+  YOUNG_PRIVATE
+  YOUNG_GROUP
+  ADULT_PRIVATE
+  ADULT_GROUP
+  TRAINING
+}
+
+enum Court {
+  CAMBERWELL
+  STROCHS
+}
