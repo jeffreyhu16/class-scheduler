@@ -31,13 +31,21 @@ model Class {
   type          ClassType
   startTime     DateTime
   endTime       DateTime
-  coach         Coach         @relation(fields: [coachId], references: [id])
   coachId       Int
+  coach         Coach         @relation(fields: [coachId], references: [id])
   students      Student[]
-  court         Court         
+  locationId    Int   
+  location      Location      @relation(fields: [locationId], references: [id])
   courtId       Int           
   note          String?
   isLeave       Boolean       @default(false)
+}
+
+model Location {
+  id            Int           @id @default(autoincrement())
+  name          String
+  courtCount    Int
+  classes       Class[]
 }
 
 enum StudentType {
@@ -52,9 +60,4 @@ enum ClassType {
   ADULT_PRIVATE
   ADULT_GROUP
   TRAINING
-}
-
-enum Court {
-  CAMBERWELL
-  STROCHS
 }
