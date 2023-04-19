@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import views from "../features/render/slice";
+import views from "../features/view/slice";
 import dates from "../features/date/slice";
 import classes from "../features/class/slice";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     views,
     dates,
