@@ -1,3 +1,10 @@
+import HomePage from "@/components/HomePage";
+import Provider from "@/components/Provider";
+
 export default async function Page() {
-  return <div></div>;
+  return (
+    <Provider>
+      <HomePage />
+    </Provider>
+  );
 }
