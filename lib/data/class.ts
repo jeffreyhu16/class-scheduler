@@ -4,12 +4,13 @@ import { DateTime } from "luxon";
 import { ClassI, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
 
 export const getClasses = async ({
-  start,
+  startDate,
   days,
   coachId,
   locationId,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
-  const end = DateTime.fromJSDate(start).plus({ days: days }).toJSDate();
+  const start = new Date(startDate);
+  const end = DateTime.fromMillis(startDate).plus({ days: days }).toJSDate();
 
   try {
     return await prisma.class.findMany({
@@ -34,7 +35,7 @@ export const createClass = async ({
   startTime,
   endTime,
   coachId,
-  studentIds,
+  students,
   locationId,
   courtId,
   note,
@@ -43,12 +44,12 @@ export const createClass = async ({
     return await prisma.class.create({
       data: {
         type,
-        startTime,
-        endTime,
+        startTime: new Date(startTime),
+        endTime: new Date(endTime),
         coachId,
         students: {
-          connect: studentIds.map((id) => ({
-            id,
+          connect: students.map((student) => ({
+            id: student.id,
           })),
         },
         locationId,
@@ -84,8 +85,8 @@ export const updateClass = async ({
       },
       data: {
         type,
-        startTime,
-        endTime,
+        startTime: startTime ? new Date(startTime) : undefined,
+        endTime: endTime ? new Date(endTime) : undefined,
         coachId,
         students: {
           connect: studentIds?.map((id) => ({
@@ -115,10 +116,10 @@ export const deleteClass = async (id: number): Promise<Class | undefined> => {
   }
 };
 
-export const copyClasses = async (copyStart: Date, weeks: number): Promise<ClassI[] | void> => {
+export const copyClasses = async (copyStart: number, weeks: number): Promise<ClassI[] | void> => {
   try {
     const prevClasses = await getClasses({
-      start: copyStart,
+      startDate: copyStart,
       days: weeks * 7,
     });
 

@@ -41,7 +41,7 @@ export interface LocationI {
 }
 
 export interface GetClassesProps {
-  start: Date;
+  startDate: number;
   days: number;
   coachId?: number;
   locationId?: number;
@@ -49,10 +49,10 @@ export interface GetClassesProps {
 
 export interface CreateClassProps {
   type: ClassType;
-  startTime: Date;
-  endTime: Date;
+  startTime: number;
+  endTime: number;
   coachId: number;
-  studentIds: number[];
+  students: Student[];
   locationId: number;
   courtId: number;
   note?: string;
@@ -63,8 +63,8 @@ export interface CreateClassesProps extends Omit<CreateClassProps, "studentIds">
 export interface UpdateClassProps {
   id: number;
   type?: ClassType;
-  startTime?: Date;
-  endTime?: Date;
+  startTime?: number;
+  endTime?: number;
   coachId?: number;
   studentIds?: number[];
   locationId?: number;
