@@ -1,0 +1,63 @@
+.form-time-start > .MuiTextField-root,
+.form-time-end > .MuiTextField-root {
+  width: 56%;
+}
+
+.form-time .MuiAutocomplete-clearIndicator {
+  display: none;
+}
+
+.form-time .MuiAutocomplete-root {
+  width: 42%;
+}
+
+.form-location .MuiAutocomplete-root {
+  width: 49%;
+}
+
+.form-time .MuiAutocomplete-root .MuiFilledInput-root {
+  padding: 19px 0 1px !important;
+}
+
+.MuiTextField-root label {
+  font-size: 1rem;
+}
+
+.MuiTextField-root label.Mui-focused {
+  color: #003567;
+}
+
+.MuiTextField-root .MuiFilledInput-root {
+  background-color: #fff;
+  margin-bottom: 1em;
+  border-radius: 0.4em;
+  /* font-size: 1rem; */
+}
+
+.MuiTextField-root .MuiFilledInput-root:hover,
+.MuiTextField-root .MuiFilledInput-root.Mui-focused {
+  background-color: #fff;
+}
+
+.MuiTextField-root .MuiFilledInput-root::before,
+.MuiTextField-root .MuiFilledInput-root::after {
+  display: none;
+}
+
+.MuiAutocomplete-endAdornment .MuiAutocomplete-clearIndicator {
+  margin-right: 2px;
+}
+
+.MuiAutocomplete-listbox {
+  max-height: 20vh !important;
+}
+
+.class-form .MuiFormControlLabel-root {
+  margin-right: 0px;
+  justify-content: flex-end;
+}
+
+.MuiFormControlLabel-root .MuiSwitch-root {
+  order: 1;
+  margin-left: 2px;
+}
