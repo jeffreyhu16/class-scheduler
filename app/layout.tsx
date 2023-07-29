@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Roboto_Mono } from "next/font/google";
+import { Lato } from "next/font/google";
 import "styles/index.css";
 
-const roboto = Roboto_Mono({
-  subsets: ["latin"],
-});
+const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={roboto.className}>
+    <html lang="en" className={lato.className}>
       <body>{children}</body>
     </html>
   );
