@@ -1,4 +1,5 @@
-import { DateTime } from "luxon";
+import { DateTime, Settings } from "luxon";
+Settings.defaultZone = "utc";
 
 export const getCurrentDate = () => {
   return DateTime.local().startOf("day").toObject();

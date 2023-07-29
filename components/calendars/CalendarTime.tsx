@@ -1,7 +1,8 @@
 "use client"
 import React from "react";
-import { DateTime } from "luxon";
+import { DateTime, Settings } from "luxon";
 import { useAppSelector } from "@/redux/store";
+Settings.defaultZone = "utc";
 
 export default function CalendarTime() {
   const time = DateTime.local().set({ hour: 7, minute: 0 });
