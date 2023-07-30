@@ -11,12 +11,12 @@ export interface CalendarDayProps {
   day?: number;
 }
 
-export default function CalendarDay({ day }: CalendarDayProps) {
+export default function CalendarDay({ day = 0 }: CalendarDayProps) {
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
   const { data } = useAppSelector((state) => state.classes);
   const { calendarView, coach, location, locationData, glowState } = useAppSelector((state) => state.views);
 
-  const classData = useAppSelector((state) => state.classes.data[day ? day : 0]);
+  const classData = useAppSelector((state) => state.classes.data[day]);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -26,10 +26,11 @@ export default function CalendarDay({ day }: CalendarDayProps) {
       if (startOfWeek && day && calendarView === "week") {
         getClassesArgs = {
           startDate: DateTime.fromObject(startOfWeek).toMillis(),
-          days: day - 1,
+          days: day,
           coachId: coach?.id,
           locationId: location?.id,
         };
+        dispatch(getClasses(getClassesArgs));
       }
       if (currentDate && calendarView === "day") {
         getClassesArgs = {
@@ -38,8 +39,8 @@ export default function CalendarDay({ day }: CalendarDayProps) {
           coachId: coach?.id,
           locationId: location?.id,
         };
+        dispatch(getClasses(getClassesArgs));
       }
-      dispatch(getClasses(getClassesArgs));
     })();
   }, [calendarView, currentDate, startOfWeek, location, coach, day]);
 
@@ -59,7 +60,7 @@ export default function CalendarDay({ day }: CalendarDayProps) {
     calendarCourts = [...Array(j)].map(() => (
       <CalendarCourt key={`${location.name}-${j}`} day={day} courtNum={j--} location={location} />
     ));
-  } else if (coach) {
+  } else if (coach && classData) {
     calendarQuarterHours = [...Array(64)].map((k, i) => (
       <CalendarQuarterHour key={`quarter-hour-${i + 1}`} day={day} quarterHour={i + 1} classData={classData} />
     ));

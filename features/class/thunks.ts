@@ -20,8 +20,8 @@ export const getClasses = createAsyncThunk("class/getClasses", async (data: GetC
       query = query.concat(`&coachId=${coachId}`);
     }
     const { data: classes } = await axios.get(query);
-    console.log('classes:', classes)
-    return classes;
+
+    return { classes, days };
   } catch (err) {
     thunkAPI.rejectWithValue(err);
   }

@@ -1,9 +1,10 @@
+import { ClassI } from "@/lib/data/types";
 import { createSlice } from "@reduxjs/toolkit";
 import { getClasses } from "./thunks";
 
 interface ClassState {
   appState: "init" | "loading" | "complete" | "error";
-  data: any[];
+  data: ClassI[][];
   fetchError?: string;
 }
 
@@ -24,7 +25,9 @@ const classSlice = createSlice({
       })
       .addCase(getClasses.fulfilled, (state, { payload }) => {
         state.appState = "complete";
-        state.data = payload;
+        if (payload?.days != undefined) {
+          state.data[payload.days] = payload?.classes;
+        }
       })
       .addCase(getClasses.rejected, (state, { payload }) => {
         state.appState = "error";

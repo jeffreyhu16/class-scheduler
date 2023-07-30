@@ -95,9 +95,15 @@ const viewSlice = createSlice({
     builder
       .addCase(getCoaches.fulfilled, (state, { payload }) => {
         state.coachData = payload;
+        if (payload?.length) {
+          state.coach = payload[0];
+        }
       })
       .addCase(getLocations.fulfilled, (state, { payload }) => {
         state.locationData = payload;
+        if (payload?.length) {
+          state.location = payload[0];
+        }
       });
   },
 });

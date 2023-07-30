@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import ClassForm from "../ClassForm";
 import { DateTime } from "luxon";
@@ -37,25 +37,20 @@ export default function CalendarQuarterHour({
   if (classData.length > 0) {
     // filter startTime //
     startTimeTarget = classData.filter((dayTarget) => {
-      const { startTime } = dayTarget;
-      const quarterInterval = startTime.getMinutes() / 15;
-      const startTimeQuarterHour = (startTime.getHours() - 7) * 4 + quarterInterval;
+      const startDateTime = DateTime.fromMillis(dayTarget.startTime);
+      const quarterInterval = startDateTime.minute / 15;
+      const startTimeQuarterHour = (startDateTime.hour - 7) * 4 + quarterInterval;
       return startTimeQuarterHour === quarterHour - 1;
     });
 
-    if (startTimeTarget.length) {
-      isStartTime = true;
-    } else {
-      isStartTime = false;
-    }
+    isStartTime = startTimeTarget.length ? true : false;
 
     // filter midTime //
     midTimeTarget = classData.filter((dayTarget) => {
-      const { startTime, endTime } = dayTarget;
-      const quarterInterval = startTime.getMinutes() / 15;
-      const startTimeQuarterHour = (startTime.getHours() - 7) * 4 + quarterInterval;
-      const startDateTime = DateTime.fromJSDate(startTime);
-      const endDateTime = DateTime.fromJSDate(endTime);
+      const startDateTime = DateTime.fromMillis(dayTarget.startTime);
+      const endDateTime = DateTime.fromMillis(dayTarget.endTime);
+      const quarterInterval = startDateTime.minute / 15;
+      const startTimeQuarterHour = (startDateTime.hour - 7) * 4 + quarterInterval;
 
       duration = endDateTime.diff(startDateTime, "minutes").toObject().minutes || 0;
 
@@ -72,25 +67,17 @@ export default function CalendarQuarterHour({
       return isMidTime;
     });
 
-    if (midTimeTarget.length) {
-      isMidTime = true;
-    } else {
-      isMidTime = false;
-    }
+    isMidTime = midTimeTarget.length ? true : false;
 
     // filter endTime //
     endTimeTarget = classData.filter((dayTarget) => {
-      const { endTime } = dayTarget;
-      const quarterInterval = endTime.getMinutes() / 15;
-      const endTimeQuarterHour = (endTime.getHours() - 7) * 4 + quarterInterval;
+      const endDateTime = DateTime.fromMillis(dayTarget.endTime);
+      const quarterInterval = endDateTime.minute / 15;
+      const endTimeQuarterHour = (endDateTime.hour - 7) * 4 + quarterInterval;
       return endTimeQuarterHour === quarterHour;
     });
 
-    if (endTimeTarget.length) {
-      isEndTime = true;
-    } else {
-      isEndTime = false;
-    }
+    isEndTime = endTimeTarget.length ? true : false;
   }
 
   let classTimeObj: ClassI | undefined;
@@ -101,8 +88,8 @@ export default function CalendarQuarterHour({
   if (isStartTime) {
     classTimeObj = startTimeTarget[0];
     const { startTime, endTime, students } = classTimeObj;
-    startString = DateTime.fromJSDate(startTime).toFormat("h:mm").toLowerCase();
-    endString = DateTime.fromJSDate(endTime).toFormat("h:mm").toLowerCase();
+    startString = DateTime.fromMillis(startTime).toFormat("h:mm");
+    endString = DateTime.fromMillis(endTime).toFormat("h:mm");
 
     students.forEach((student) => {
       studentNames += student + " ";

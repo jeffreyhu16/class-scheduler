@@ -22,14 +22,14 @@ export interface CoachI {
 export interface ClassI {
   id: number;
   type: ClassType;
-  startTime: Date;
-  endTime: Date;
+  startTime: number;
+  endTime: number;
   coachId: number;
   coach: Coach;
   students: Student[];
   location: Location;
   courtId: number;
-  note: string | null;
+  note?: string;
   isLeave: boolean;
 }
 

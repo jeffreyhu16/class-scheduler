@@ -2,6 +2,7 @@ import { Class, Student } from "@prisma/client";
 import { prisma } from "../prisma";
 import { DateTime } from "luxon";
 import { ClassI, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
+import { convertClass } from "../utils";
 
 export const getClasses = async ({
   startDate,
@@ -13,7 +14,7 @@ export const getClasses = async ({
   const end = DateTime.fromMillis(startDate).plus({ days: days }).toJSDate();
 
   try {
-    return await prisma.class.findMany({
+    const classes = await prisma.class.findMany({
       where: {
         startTime: { gt: start, lt: end },
         coachId: coachId,
@@ -25,6 +26,8 @@ export const getClasses = async ({
         location: true,
       },
     });
+
+    return classes.map((c) => convertClass(c));
   } catch (error) {
     console.log(error);
   }
@@ -41,7 +44,7 @@ export const createClass = async ({
   note,
 }: CreateClassProps): Promise<ClassI | undefined> => {
   try {
-    return await prisma.class.create({
+    const c = await prisma.class.create({
       data: {
         type,
         startTime: new Date(startTime),
@@ -62,6 +65,8 @@ export const createClass = async ({
         location: true,
       },
     });
+
+    return convertClass(c);
   } catch (error) {
     console.log(error);
   }
@@ -79,7 +84,7 @@ export const updateClass = async ({
   note,
 }: UpdateClassProps): Promise<ClassI | undefined> => {
   try {
-    return await prisma.class.update({
+    const c = await prisma.class.update({
       where: {
         id,
       },
@@ -103,6 +108,8 @@ export const updateClass = async ({
         location: true,
       },
     });
+
+    return convertClass(c);
   } catch (error) {
     console.log(error);
   }
@@ -125,13 +132,13 @@ export const copyClasses = async (copyStart: number, weeks: number): Promise<Cla
 
     if (!prevClasses) return undefined;
 
-    return await prisma.$transaction(
+    const classes = await prisma.$transaction(
       prevClasses.map((c) =>
         prisma.class.create({
           data: {
             type: c.type,
-            startTime: DateTime.fromJSDate(c.startTime).plus({ weeks }).toJSDate(),
-            endTime: DateTime.fromJSDate(c.endTime).plus({ weeks }).toJSDate(),
+            startTime: DateTime.fromMillis(c.startTime).plus({ weeks }).toJSDate(),
+            endTime: DateTime.fromMillis(c.endTime).plus({ weeks }).toJSDate(),
             coachId: c.coachId,
             students: {
               connect: c.students.map((student) => ({
@@ -150,6 +157,8 @@ export const copyClasses = async (copyStart: number, weeks: number): Promise<Cla
         })
       )
     );
+
+    return classes.map((c) => convertClass(c));
   } catch (error) {
     console.log(error);
   }

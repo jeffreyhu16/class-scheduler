@@ -10,10 +10,9 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Coach, Student, Location } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
 export interface ClassFormInputs {
-  startTime: Date;
-  endTime: Date;
+  startTime: number;
+  endTime: number;
   coach: Coach;
   students: Student[];
   location: Location;
@@ -76,8 +75,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
 
   if (classTimeTarget) {
     const { startTime, endTime } = classTimeTarget;
-    startDateTime = DateTime.fromJSDate(startTime);
-    endDateTime = DateTime.fromJSDate(endTime);
+    startDateTime = DateTime.fromMillis(startTime);
+    endDateTime = DateTime.fromMillis(endTime);
   } else if (startOfWeek && day) {
     dateObj = DateTime.fromObject(startOfWeek);
     startDateTime = dateObj.plus({ days: day - 1, hours: hour, minutes: min });
@@ -94,8 +93,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     if (startOfWeek || currentDate) {
       setInputs((prevInputs) => ({
         ...prevInputs,
-        startTime: startDateTime.toJSDate(),
-        endTime: endDateTime.toJSDate(),
+        startTime: startDateTime.toMillis(),
+        endTime: endDateTime.toMillis(),
       }));
     }
   }, [startOfWeek, currentDate]);
@@ -171,8 +170,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     if (inputDate.startDate) {
       const { startDate, endDate, startTimeString, endTimeString } = inputDate;
       const format = "dd/MM/yyyy h:mm a";
-      const startTime = DateTime.fromFormat(`${startDate} ${startTimeString}`, format).toJSDate();
-      const endTime = DateTime.fromFormat(`${endDate} ${endTimeString}`, format).toJSDate();
+      const startTime = DateTime.fromFormat(`${startDate} ${startTimeString}`, format).toMillis();
+      const endTime = DateTime.fromFormat(`${endDate} ${endTimeString}`, format).toMillis();
 
       setInputs((prev) => ({
         ...prev,
