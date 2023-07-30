@@ -35,6 +35,7 @@ export interface ClassI {
 
 export interface LocationI {
   id: number;
+  key: string;
   name: string;
   courtCount: number;
   classes?: Class[];

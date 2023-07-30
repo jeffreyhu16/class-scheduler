@@ -13,7 +13,7 @@ export interface CalendarDayProps {
 
 export default function CalendarDay({ day = 0 }: CalendarDayProps) {
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
-  const { data } = useAppSelector((state) => state.classes);
+  const dayClassData = useAppSelector((state) => state.classes.data[day]);
   const { calendarView, coach, location, locationData, glowState } = useAppSelector((state) => state.views);
 
   const dispatch = useAppDispatch();
@@ -43,25 +43,26 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
     })();
   }, [calendarView, currentDate, startOfWeek, location, coach, day]);
 
-  if (!data.length) return null;
-
   let calendarQuarterHours: JSX.Element[] = [];
   let calendarCourts: JSX.Element[] = [];
 
   if (locationData && calendarView === "day") {
+    // Day view
     locationData.forEach((location) => {
       for (let j = location.courtCount; j > 0; j--) {
-        calendarCourts.push(<CalendarCourt location={location} courtNum={j} />);
+        calendarCourts.push(<CalendarCourt key={`${location.name}-${j}`} courtNum={j} />);
       }
     });
   } else if (!coach && location) {
-    let j = location.courtCount;
-    calendarCourts = [...Array(j)].map(() => (
-      <CalendarCourt key={`${location.name}-${j}`} day={day} courtNum={j--} location={location} />
+    // Week view expanded
+    const { courtCount } = location;
+    calendarCourts = [...Array(courtCount)].map((v, i) => (
+      <CalendarCourt key={`${location.name}-${courtCount - i}`} day={day} courtNum={courtCount - i} />
     ));
-  } else if (coach) {
-    calendarQuarterHours = [...Array(64)].map((k, i) => (
-      <CalendarQuarterHour key={`quarter-hour-${i + 1}`} day={day} quarterHour={i + 1} />
+  } else if (coach && dayClassData) {
+    // Week view
+    calendarQuarterHours = [...Array(64)].map((v, i) => (
+      <CalendarQuarterHour key={`quarter-hour-${i + 1}`} day={day} quarterHour={i + 1} classData={dayClassData} />
     ));
   }
 

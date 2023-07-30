@@ -50,7 +50,7 @@ const initialState: ViewState = {
   printMode: false,
   glowState: {
     day: [],
-    location: { camberwell: [], stRochs: [] },
+    location: {},
     quarterHour: [],
   },
 };
@@ -103,6 +103,9 @@ const viewSlice = createSlice({
         state.locationData = payload;
         if (payload?.length) {
           state.location = payload[0];
+          payload.forEach((location: LocationI) => {
+            state.glowState.location[location.key] = [];
+          });
         }
       });
   },

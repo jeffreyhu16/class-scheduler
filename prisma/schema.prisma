@@ -43,6 +43,7 @@ model Class {
 
 model Location {
   id            Int           @id @default(autoincrement())
+  key           String        @unique
   name          String
   courtCount    Int
   classes       Class[]

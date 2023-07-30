@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { CSSProperties, useEffect, useState } from "react";
 import { DateTime, Settings, ToObjectOutput } from "luxon";
 import { useAppSelector } from "@/redux/store";
@@ -27,16 +27,16 @@ export default function CalendarHead() {
     }
   }, [startOfWeek]);
 
-  function CalendarHeadCourt({ day, location }: CalendarHeadCourtProps) {
-    const { name, courtCount } = location;
+  const CalendarHeadCourt = ({ day, location }: CalendarHeadCourtProps) => {
+    const { key, courtCount } = location;
     const dayCourtHeads = [...Array(location.courtCount)].map((k, i) => {
       const weekStyles: CSSProperties = {
-        opacity: day && glowState.day[day] && glowState.location[name][courtCount] ? "1" : "0",
+        opacity: day && glowState.day[day] && glowState.location[key][courtCount] ? "1" : "0",
         width: `calc(100% / ${courtCount})`,
         marginBottom: "0.3em",
       };
       const dayStyles: CSSProperties = {
-        textShadow: glowState.location[name][courtCount] ? "0 0 0.5rem #fff" : "none",
+        textShadow: (glowState.location[key] || [])[courtCount] ? "0 0 0.5rem #fff" : "none",
         width: `calc(100% / 7)`, // change logic when new courts added //
         marginBottom: "0.8em",
       };
@@ -52,7 +52,7 @@ export default function CalendarHead() {
       );
     });
     return <>{dayCourtHeads}</>;
-  }
+  };
 
   if (currentDate && locationData && calendarView !== "week") {
     for (let i = 1; i < locationData.length; i++) {
@@ -62,32 +62,29 @@ export default function CalendarHead() {
 
   return (
     <>
-      {calendarView === "week"
-        ? weekData &&
-          location &&
-          calendarView === "week" &&
-          Object.entries(weekData).map((weekDay, i) => {
-            const styles = {
-              textShadow: glowState.day[i + 1] ? "0 0 0.5rem #fff" : "none",
-              marginBottom: !!coach ? "1em" : "0",
-            };
+      {calendarView === "week" &&
+        Object.entries(weekData || {}).map(([day, date], i) => {
+          const styles = {
+            textShadow: glowState.day[i + 1] ? "0 0 0.5rem #fff" : "none",
+            marginBottom: !!coach ? "1em" : "0",
+          };
 
-            return (
-              <div key={i} className={`calendar-head`} style={styles}>
-                <div className="calendar-head-day">{weekDay[0]}</div>
-                <div className="calendar-head-date">{weekDay[1].day}</div>
+          return (
+            <div key={i} className={`calendar-head`} style={styles}>
+              <div className="calendar-head-day">{day}</div>
+              <div className="calendar-head-date">{date.day}</div>
 
-                {calendarView === "week" && !coach && (
-                  <div className="calendar-head-court-day">
-                    <CalendarHeadCourt day={i} location={location} />
-                  </div>
-                )}
-              </div>
-            );
-          })
-        : currentDate &&
-          locationData &&
-          locationData.map((location, i) => <CalendarHeadCourt key={location.id} location={location} />)}
+              {!coach && location && (
+                <div className="calendar-head-court-day">
+                  <CalendarHeadCourt day={i + 1} location={location} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+      {calendarView === "day" &&
+        locationData?.map((location) => <CalendarHeadCourt key={location.id} location={location} />)}
     </>
   );
 }
