@@ -11,16 +11,15 @@ export interface CalendarQuarterHourProps {
   location?: LocationI;
   courtNum?: number;
   quarterHour: number;
-  classData: ClassI[];
 }
 
 export default function CalendarQuarterHour({
-  day,
+  day = 0,
   location,
   courtNum,
   quarterHour,
-  classData,
 }: CalendarQuarterHourProps) {
+  const classData = useAppSelector((state) => state.classes.data[day]);
   const { calendarView, coach, printMode } = useAppSelector((state) => state.views);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -34,7 +33,7 @@ export default function CalendarQuarterHour({
   let isLeave = false;
 
   let isStartTime, isMidTime, isEndTime, duration, showLocation;
-  if (classData.length > 0) {
+  if (classData?.length > 0) {
     // filter startTime //
     startTimeTarget = classData.filter((dayTarget) => {
       const startDateTime = DateTime.fromMillis(dayTarget.startTime);
@@ -92,7 +91,7 @@ export default function CalendarQuarterHour({
     endString = DateTime.fromMillis(endTime).toFormat("h:mm");
 
     students.forEach((student) => {
-      studentNames += student + " ";
+      studentNames += student.name + " ";
     });
   }
 

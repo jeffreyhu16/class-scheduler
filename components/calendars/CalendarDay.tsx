@@ -16,7 +16,6 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
   const { data } = useAppSelector((state) => state.classes);
   const { calendarView, coach, location, locationData, glowState } = useAppSelector((state) => state.views);
 
-  const classData = useAppSelector((state) => state.classes.data[day]);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -60,9 +59,9 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
     calendarCourts = [...Array(j)].map(() => (
       <CalendarCourt key={`${location.name}-${j}`} day={day} courtNum={j--} location={location} />
     ));
-  } else if (coach && classData) {
+  } else if (coach) {
     calendarQuarterHours = [...Array(64)].map((k, i) => (
-      <CalendarQuarterHour key={`quarter-hour-${i + 1}`} day={day} quarterHour={i + 1} classData={classData} />
+      <CalendarQuarterHour key={`quarter-hour-${i + 1}`} day={day} quarterHour={i + 1} />
     ));
   }
 

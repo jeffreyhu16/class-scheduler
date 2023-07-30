@@ -88,9 +88,9 @@ h1 {
     color: #00182f;
 } */
 
-.header-flex,
-.main-flex {
-  display: flex;
+.header,
+.main {
+  display: none;
   margin: 0.7em auto;
   justify-content: center;
   width: min(97%, 100rem);

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { CSSProperties } from "react";
 import CalendarHead from "./CalendarHead";
 import CalendarTime from "./CalendarTime";
@@ -37,11 +37,13 @@ export default function Calendar() {
   return (
     <ScrollSync>
       <div id="calendar" className="calendar" style={styles.calendar}>
-        <div className="coach-label-container">
-          <div className="coach-label" style={styles.label}>
-            {coach?.name || ""}
+        {coach && (
+          <div className="coach-label-container">
+            <div className="coach-label" style={styles.label}>
+              {coach.name}
+            </div>
           </div>
-        </div>
+        )}
         <div className="calendar-head-sticky">
           <ScrollSyncPane>
             <div className="calendar-head-scroll">

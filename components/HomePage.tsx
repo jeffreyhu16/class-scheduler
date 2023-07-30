@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { getCurrentDate, getStartOfWeek } from "@/lib/date";
@@ -19,8 +19,8 @@ export default function HomePage() {
     const currentDate = getCurrentDate();
     dispatch(setStartOfWeek(startOfWeek));
     dispatch(setCurrentDate(currentDate));
-    dispatch(getCoaches())
-    dispatch(getLocations())
+    dispatch(getCoaches());
+    dispatch(getLocations());
 
     const windowResizeHandler = () => {
       dispatch(
@@ -31,6 +31,8 @@ export default function HomePage() {
         })
       );
     };
+
+    windowResizeHandler();
 
     window.addEventListener("resize", windowResizeHandler);
 
