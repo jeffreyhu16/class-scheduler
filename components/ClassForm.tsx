@@ -18,7 +18,7 @@ export interface ClassFormInputs {
   location: Location;
   courtId: number;
   note?: string;
-  isLeave: boolean;
+  isBreak: boolean;
 }
 
 export interface ClassFormProps {
@@ -112,7 +112,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
 
   useEffect(() => {
     if (classTimeTarget) {
-      const { startTime, endTime, students, coach, location, courtId, note, isLeave } = classTimeTarget;
+      const { startTime, endTime, students, coach, location, courtId, note, isBreak } = classTimeTarget;
       setInputs({
         startTime,
         endTime,
@@ -121,7 +121,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
         location,
         courtId,
         note: note || undefined,
-        isLeave: isLeave,
+        isBreak,
       });
     }
   }, [classTimeTarget]); // maybe take away dependencies //
@@ -366,7 +366,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
         <FormControlLabel
           control={
             <Switch
-              checked={inputs.isLeave}
+              checked={inputs.isBreak}
               onChange={(e) =>
                 setInputs((prev) => ({
                   ...prev,
@@ -377,7 +377,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
               // sx={{ marginLeft: 'auto' }}
             />
           }
-          label={<FontAwesomeIcon icon={inputs.isLeave ? faLock : faUnlockKeyhole} />}
+          label={<FontAwesomeIcon icon={inputs.isBreak ? faLock : faUnlockKeyhole} />}
         />
         <div className="form-button-group">
           <button

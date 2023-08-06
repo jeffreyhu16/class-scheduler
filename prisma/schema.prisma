@@ -38,7 +38,7 @@ model Class {
   location      Location      @relation(fields: [locationId], references: [id])
   courtId       Int           
   note          String?
-  isLeave       Boolean       @default(false)
+  isBreak       Boolean       @default(false)
 }
 
 model Location {

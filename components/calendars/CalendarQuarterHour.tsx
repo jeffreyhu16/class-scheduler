@@ -31,7 +31,7 @@ export default function CalendarQuarterHour({
   let startTimeTarget: ClassI[] = [];
   let midTimeTarget: ClassI[] = [];
   let endTimeTarget: ClassI[] = [];
-  let isLeave = false;
+  let isBreak = false;
 
   let isStartTime, isMidTime, isEndTime, duration, showLocation;
   if (classData.length > 0) {
@@ -104,7 +104,7 @@ export default function CalendarQuarterHour({
     ? endTimeTarget[0]
     : undefined;
 
-  if (classTimeTarget) isLeave = classTimeTarget.isLeave;
+  if (classTimeTarget) isBreak = classTimeTarget.isBreak;
 
   let isFree = true;
   if (isStartTime || isMidTime || isEndTime) isFree = false;
@@ -125,7 +125,7 @@ export default function CalendarQuarterHour({
     borderBottom = borderDefault;
   }
 
-  if (isLeave || (isLeave && isHover)) {
+  if (isBreak || (isBreak && isHover)) {
     backgroundColor = "rgba(201,229,255,0.5)";
   } else if (!isFree || isHover) {
     backgroundColor = "#c9e5ff";

@@ -30,7 +30,7 @@ export interface ClassI {
   location: Location;
   courtId: number;
   note?: string;
-  isLeave: boolean;
+  isBreak: boolean;
 }
 
 export interface LocationI {
