@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { CSSProperties, useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import { DateTime, Settings, ToObjectOutput } from "luxon";
@@ -12,9 +12,14 @@ import { CalendarView, setCalendarView, setLocation, setCoach, setPrintMode } fr
 import { setStartOfWeek, setCurrentDate } from "@/features/date/slice";
 
 export interface ActiveState {
-  view: (boolean | undefined)[];
-  location: (boolean | undefined)[];
-  coach: (boolean | undefined)[];
+  view: "day" | "week";
+  location: number;
+  coach: number;
+}
+
+export interface HoverState {
+  day: boolean;
+  week: boolean;
 }
 
 export default function HeaderNav() {
@@ -22,8 +27,12 @@ export default function HeaderNav() {
   const { calendarView, locationData, coachData, breakPoint, printMode } = useAppSelector((state) => state.views);
   const { startOfWeek, currentDate } = useAppSelector((state) => state.dates);
 
-  const [active, setActive] = useState<ActiveState>({ view: [, true], location: [, true], coach: [, , , true] });
-  const [isHover, setIsHover] = useState<boolean[]>([]);
+  const [activeState, setActiveState] = useState<ActiveState>({
+    view: "week",
+    location: 1,
+    coach: 1,
+  });
+  const [hoverState, setHoverState] = useState<HoverState>({ day: false, week: false });
 
   let currentDay, day1, day7, month, year;
   let nextDay: ToObjectOutput, prevDay: ToObjectOutput, nextWeek: ToObjectOutput, prevWeek: ToObjectOutput;
@@ -50,13 +59,13 @@ export default function HeaderNav() {
     if (view === "week" && locationData) {
       setLocation(locationData[1]);
       setCoach(undefined);
-      setActive({ view: [false, true], location: [false, false, true], coach: [false, true] });
+      setActiveState({ view: "week", location: 1, coach: 1 });
     }
 
     if (view === "day") {
       setLocation(undefined);
       setCoach(undefined);
-      setActive({ view: [true, false], location: [false, true], coach: [false, true] });
+      setActiveState({ view: "day", location: 0, coach: 1 });
     }
   }
 
@@ -92,12 +101,12 @@ export default function HeaderNav() {
     }
   };
 
-  const castBackground = (i: number) => {
+  const castBackground = (view: "day" | "week") => {
     let background;
-    if (active.view[i] && !isHover[i]) background = "#c9e5ff";
-    if (active.view[i] && isHover[i]) background = "#c9e5fff1";
-    if (!active.view[i] && !isHover[i]) background = "#004b8f";
-    if (!active.view[i] && isHover[i]) background = "#0055a4";
+    if (activeState.view === view && !hoverState[view]) background = "#c9e5ff";
+    if (activeState.view === view && hoverState[view]) background = "#c9e5fff1";
+    if (activeState.view !== view && !hoverState[view]) background = "#004b8f";
+    if (activeState.view !== view && hoverState[view]) background = "#0055a4";
     return background;
   };
 
@@ -110,14 +119,14 @@ export default function HeaderNav() {
   const activeShadow = "0 0 1rem 0 rgba(255, 255, 255, 0.4)";
   const defaultShadow = "0 0 1rem 0 rgba(0, 0, 0, 0.3)";
   const dayStyles: CSSProperties = {
-    backgroundColor: castBackground(0),
-    color: active.view[0] ? "#00182f" : "#fff",
-    boxShadow: active.view[0] ? activeShadow : defaultShadow,
+    backgroundColor: castBackground("day"),
+    color: activeState.view === "day" ? "#00182f" : "#fff",
+    boxShadow: activeState.view === "day" ? activeShadow : defaultShadow,
   };
   const weekStyles: CSSProperties = {
-    backgroundColor: castBackground(1),
-    color: active.view[1] ? "#00182f" : "#fff",
-    boxShadow: active.view[1] ? activeShadow : defaultShadow,
+    backgroundColor: castBackground("week"),
+    color: activeState.view === "week" ? "#00182f" : "#fff",
+    boxShadow: activeState.view === "week" ? activeShadow : defaultShadow,
   };
 
   return (
@@ -133,16 +142,16 @@ export default function HeaderNav() {
             <div
               className="header-toggle-day"
               onClick={() => toggleView("day")}
-              onMouseEnter={() => setIsHover([true, false])}
-              onMouseLeave={() => setIsHover([false, false])}
+              onMouseEnter={() => setHoverState((prev) => ({ ...prev, day: true }))}
+              onMouseLeave={() => setHoverState((prev) => ({ ...prev, day: false }))}
               style={dayStyles}>
               Day
             </div>
             <div
               className="header-toggle-week"
               onClick={() => toggleView("week")}
-              onMouseEnter={() => setIsHover([false, true])}
-              onMouseLeave={() => setIsHover([false, false])}
+              onMouseEnter={() => setHoverState((prev) => ({ ...prev, week: true }))}
+              onMouseLeave={() => setHoverState((prev) => ({ ...prev, week: false }))}
               style={weekStyles}>
               Week
             </div>
@@ -154,16 +163,16 @@ export default function HeaderNav() {
               <Dropdown
                 label="location"
                 listData={[{ name: "all" }, ...locationData]}
-                active={active}
-                setActive={setActive}
+                active={activeState}
+                setActive={setActiveState}
               />
             )}
             {coachData && (
               <Dropdown
                 label="coach"
                 listData={[{ name: "all" }, ...coachData]}
-                active={active}
-                setActive={setActive}
+                active={activeState}
+                setActive={setActiveState}
               />
             )}
           </div>
