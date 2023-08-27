@@ -15,8 +15,8 @@ export interface CoachI {
   id: number;
   name: string;
   payRate: number | null;
-  students: Student[];
-  classes: Class[];
+  students?: Student[];
+  classes?: Class[];
 }
 
 export interface ClassI {
