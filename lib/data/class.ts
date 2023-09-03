@@ -42,6 +42,7 @@ export const createClass = async ({
   locationId,
   courtId,
   note,
+  isBreak,
 }: CreateClassProps): Promise<ClassI | undefined> => {
   try {
     const c = await prisma.class.create({
@@ -58,6 +59,7 @@ export const createClass = async ({
         locationId,
         courtId,
         note,
+        isBreak,
       },
       include: {
         students: true,
@@ -65,7 +67,7 @@ export const createClass = async ({
         location: true,
       },
     });
-
+    console.log('created class:', c)
     return convertClass(c);
   } catch (error) {
     console.log(error);

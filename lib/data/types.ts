@@ -57,6 +57,7 @@ export interface CreateClassProps {
   locationId: number;
   courtId: number;
   note?: string;
+  isBreak: boolean;
 }
 
 export interface CreateClassesProps extends Omit<CreateClassProps, "studentIds"> {}

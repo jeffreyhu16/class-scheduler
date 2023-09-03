@@ -15,13 +15,14 @@ export async function POST(req: Request) {
       "locationId",
       "courtId",
       "note",
+      "isBreak",
     ])
   ) {
     return NextResponse.error();
   }
-  const { type, startTime, endTime, coachId, students, locationId, courtId, note } = requestBody;
+  const { type, startTime, endTime, coachId, students, locationId, courtId, note, isBreak } = requestBody;
   return NextResponse.json(
-    await createClass({ type, startTime, endTime, coachId, students, locationId, courtId, note })
+    await createClass({ type, startTime, endTime, coachId, students, locationId, courtId, note, isBreak })
   );
 }
 
