@@ -1,6 +1,7 @@
+import { ClassFormInputs } from "@/components/ClassForm";
 import { Class, Student, Coach, Location } from "@prisma/client";
 import { DateTime } from "luxon";
-import { ClassI } from "./data/types";
+import { ClassI, CreateClassProps, UpdateClassProps } from "./data/types";
 
 export const getRequestValue = (req: any, domain: string, key: string) => {
   if (req && req[domain]) {
@@ -34,6 +35,21 @@ export const convertClass = (
     location: c.location,
     courtId: c.courtId,
     note: c.note || undefined,
-    isLeave: c.isLeave,
+    isBreak: c.isBreak,
+  };
+};
+
+export const convertFormInputs = (form: ClassFormInputs, editClassId?: number): CreateClassProps | UpdateClassProps => {
+  return {
+    ...(editClassId && { id: editClassId }),
+    type: form.type,
+    startTime: form.startTime,
+    endTime: form.endTime,
+    coachId: form.coach.id,
+    students: form.students,
+    locationId: form.location.id,
+    courtId: form.courtId,
+    note: form.note,
+    isBreak: form.isBreak,
   };
 };

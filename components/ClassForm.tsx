@@ -15,11 +15,13 @@ import {
 import { ClassI, CoachI, LocationI } from "@/lib/data/types";
 import { getTimeOptions } from "@/lib/date";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { Student } from "@prisma/client";
+import { ClassType, Student } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { convertFormInputs } from "@/lib/utils";
 
 export interface ClassFormInputs {
+  type: ClassType;
   startTime: number;
   endTime: number;
   coach: CoachI;
@@ -38,6 +40,7 @@ export interface ClassFormProps {
 }
 
 const DEFAULT_CLASS_FORM: ClassFormInputs = {
+  type: "ADULT_PRIVATE",
   startTime: 0,
   endTime: 0,
   coach: {
@@ -121,8 +124,9 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     });
 
     if (classTimeTarget) {
-      const { startTime, endTime, students, coach, location, courtId, note, isBreak } = classTimeTarget;
+      const { type, startTime, endTime, students, coach, location, courtId, note, isBreak } = classTimeTarget;
       setInputs({
+        type,
         startTime,
         endTime,
         coach,
@@ -158,14 +162,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let method, body;
-    if (classTimeTarget) {
-      method = "put";
-      body = { ...inputs, id: classTimeTarget.id };
-    } else {
-      method = "post";
-      body = inputs;
-    }
+    const method = classTimeTarget ? "put" : "post";
+    const body = convertFormInputs(inputs, classTimeTarget?.id);
 
     try {
       await fetch("/api/class", {
@@ -237,7 +235,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
 
   return (
     <div className="form-container">
-      <form className="class-form" onSubmit={(e) => handleSubmit}>
+      <form className="class-form" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-time">
           <div className="form-time-start">
             <TextField
