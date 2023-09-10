@@ -11,8 +11,8 @@ export async function GET(req: Request) {
   const classes = await getClasses({
     startDate: Number(startDate),
     days: Number(days),
-    coachId: coachId ? Number(coachId) : undefined,
-    locationId: locationId ? Number(locationId) : undefined,
+    coachId: coachId ?? undefined,
+    locationId: locationId ?? undefined,
   });
 
   return NextResponse.json(classes);
