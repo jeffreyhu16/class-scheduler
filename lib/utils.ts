@@ -39,7 +39,7 @@ export const convertClass = (
   };
 };
 
-export const convertFormInputs = (form: ClassFormInputs, editClassId?: number): CreateClassProps | UpdateClassProps => {
+export const convertFormInputs = (form: ClassFormInputs, editClassId?: string): CreateClassProps | UpdateClassProps => {
   return {
     ...(editClassId && { id: editClassId }),
     type: form.type,

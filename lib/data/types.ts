@@ -1,7 +1,7 @@
 import { StudentType, ClassType, Coach, Location, Student, Class } from "@prisma/client";
 
 export interface StudentI {
-  id: number;
+  id: string;
   type: StudentType;
   name: string;
   dob: Date | null;
@@ -12,7 +12,7 @@ export interface StudentI {
 }
 
 export interface CoachI {
-  id: number;
+  id: string;
   name: string;
   payRate: number | null;
   students?: Student[];
@@ -20,11 +20,11 @@ export interface CoachI {
 }
 
 export interface ClassI {
-  id: number;
+  id: string;
   type: ClassType;
   startTime: number;
   endTime: number;
-  coachId: number;
+  coachId: string;
   coach: Coach;
   students: Student[];
   location: Location;
@@ -34,7 +34,7 @@ export interface ClassI {
 }
 
 export interface LocationI {
-  id: number;
+  id: string;
   key: string;
   name: string;
   courtCount: number;
@@ -52,9 +52,9 @@ export interface CreateClassProps {
   type: ClassType;
   startTime: number;
   endTime: number;
-  coachId: number;
+  coachId: string;
   students: Student[];
-  locationId: number;
+  locationId: string;
   courtId: number;
   note?: string;
   isBreak: boolean;
@@ -63,13 +63,13 @@ export interface CreateClassProps {
 export interface CreateClassesProps extends Omit<CreateClassProps, "studentIds"> {}
 
 export interface UpdateClassProps {
-  id: number;
+  id: string;
   type?: ClassType;
   startTime?: number;
   endTime?: number;
-  coachId?: number;
+  coachId?: string;
   studentIds?: number[];
-  locationId?: number;
+  locationId?: string;
   courtId?: number;
   note?: string;
 }

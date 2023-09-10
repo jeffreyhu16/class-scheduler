@@ -52,7 +52,7 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
   startTime: 0,
   endTime: 0,
   coach: {
-    id: 0,
+    id: "",
     name: "",
     payRate: null,
     students: [],
@@ -60,7 +60,7 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
   },
   students: [],
   location: {
-    id: 0,
+    id: "",
     key: "",
     name: "",
     courtCount: 0,

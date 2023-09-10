@@ -8,7 +8,7 @@ generator client {
 }
 
 model Student {
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          StudentType
   name          String
   dob           DateTime?     @db.Timestamptz(3)
@@ -19,7 +19,7 @@ model Student {
 }
 
 model Coach {
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String
   payRate       Int?
   students      Student[]
@@ -27,14 +27,14 @@ model Coach {
 }
 
 model Class {
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          ClassType
   startTime     DateTime
   endTime       DateTime
-  coachId       Int
+  coachId       String        @db.Uuid
   coach         Coach         @relation(fields: [coachId], references: [id])
   students      Student[]
-  locationId    Int   
+  locationId    String        @db.Uuid
   location      Location      @relation(fields: [locationId], references: [id])
   courtId       Int           
   note          String?
@@ -42,7 +42,7 @@ model Class {
 }
 
 model Location {
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   key           String        @unique
   name          String
   courtCount    Int
