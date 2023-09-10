@@ -563,7 +563,7 @@ h1 {
   /* outline: red auto 1px; */
 }
 
-.form-location,
+.form-double,
 .form-time {
   display: flex;
   justify-content: space-between;

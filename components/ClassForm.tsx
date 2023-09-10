@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, MouseEvent, FormEvent, useMemo, HTMLAttributes } from "react";
+import React, { useEffect, useState, MouseEvent, FormEvent, HTMLAttributes } from "react";
 import { DateTime } from "luxon";
 import { faTrashCan, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 import { ClassI, CoachI, LocationI } from "@/lib/data/types";
 import { getTimeOptions } from "@/lib/date";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { ClassType, Student } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { convertFormInputs } from "@/lib/utils";
+import { convertFormInputs, parseClassType } from "@/lib/utils";
 
 export interface ClassFormInputs {
   type: ClassType;
@@ -39,8 +39,16 @@ export interface ClassFormProps {
   classTimeTarget?: ClassI;
 }
 
+const classTypes: ClassType[] = [
+  ClassType.ADULT_PRIVATE,
+  ClassType.ADULT_GROUP,
+  ClassType.YOUNG_PRIVATE,
+  ClassType.YOUNG_GROUP,
+  ClassType.TRAINING,
+];
+
 const DEFAULT_CLASS_FORM: ClassFormInputs = {
-  type: "ADULT_PRIVATE",
+  type: classTypes[0],
   startTime: 0,
   endTime: 0,
   coach: {
@@ -65,9 +73,8 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
 
 export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarget }: ClassFormProps) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
-  const { calendarView, coach, coachData, location, locationData, glowState } = useAppSelector((state) => state.views);
+  const { coachData, locationData } = useAppSelector((state) => state.views);
 
   const [timeOptions, setTimeOptions] = useState<string[]>();
   const [studentOptions, setStudentOptions] = useState<Student[]>();
@@ -194,15 +201,6 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     }
   }, [inputDate]);
 
-  const renderOptionHandler = (props: HTMLAttributes<HTMLLIElement>, option: string) => (
-    <li {...props} key={option}>
-      {option}
-    </li>
-  );
-
-  const renderTagsHandler = (tagValue: string[], getTagProps: AutocompleteRenderGetTagProps) =>
-    tagValue.map((option, index) => <Chip {...getTagProps({ index })} key={option} label={option} />);
-
   const popStyle = {
     boxShadow: "0 0 1rem 0 rgba(0, 0, 0, 0.2)",
     "& .MuiAutocomplete-listbox": {
@@ -318,6 +316,57 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
             />
           </div>
         </div>
+
+        <div className="form-double">
+          <Autocomplete
+            options={classTypes}
+            isOptionEqualToValue={(option, value) => true}
+            getOptionLabel={(option: ClassType) => parseClassType(option)}
+            renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
+              <li {...props} key={option}>
+                {parseClassType(option)}
+              </li>
+            )}
+            renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
+              tagValue.map((option, index) => (
+                <Chip {...getTagProps({ index })} key={option} label={parseClassType(option)} />
+              ))
+            }
+            renderInput={(params) => <TextField {...params} label="Class Type" variant="filled" />}
+            value={inputs.type}
+            onChange={(e, value) =>
+              setInputs((prev) => ({
+                ...prev,
+                ...(value && { type: value }),
+              }))
+            }
+            size="small"
+            autoHighlight
+          />
+          <Autocomplete
+            options={coachData || []}
+            isOptionEqualToValue={(option, value) => true}
+            getOptionLabel={(option: CoachI) => option.name}
+            renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
+              <li {...props} key={option.id}>
+                {option.name}
+              </li>
+            )}
+            renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
+              tagValue.map((option, index) => <Chip {...getTagProps({ index })} key={option.id} label={option.name} />)
+            }
+            renderInput={(params) => <TextField {...params} label="Coach" variant="filled" />}
+            value={inputs.coach}
+            onChange={(e, value) =>
+              setInputs((prev) => ({
+                ...prev,
+                ...(value && { coach: value }),
+              }))
+            }
+            size="small"
+            autoHighlight
+          />
+        </div>
         <Autocomplete
           options={studentOptions || []}
           getOptionLabel={(option) => option.name}
@@ -341,30 +390,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
           autoHighlight
           multiple
         />
-        <Autocomplete
-          options={coachData || []}
-          isOptionEqualToValue={(option, value) => true}
-          getOptionLabel={(option: CoachI) => option.name}
-          renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
-            <li {...props} key={option.id}>
-              {option.name}
-            </li>
-          )}
-          renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
-            tagValue.map((option, index) => <Chip {...getTagProps({ index })} key={option.id} label={option.name} />)
-          }
-          renderInput={(params) => <TextField {...params} label="Coach" variant="filled" />}
-          value={inputs.coach}
-          onChange={(e, value) =>
-            setInputs((prev) => ({
-              ...prev,
-              ...(value && { coach: value }),
-            }))
-          }
-          size="small"
-          autoHighlight
-        />
-        <div className="form-location">
+        <div className="form-double">
           <Autocomplete
             options={locationData || []}
             isOptionEqualToValue={(option, value) => true}

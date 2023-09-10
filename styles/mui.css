@@ -11,7 +11,7 @@
   width: 42%;
 }
 
-.form-location .MuiAutocomplete-root {
+.form-double .MuiAutocomplete-root {
   width: 49%;
 }
 
@@ -27,7 +27,7 @@
   color: #003567;
 }
 
-.MuiTextField-root .MuiFilledInput-root {
+.MuiFilledInput-root {
   background-color: #fff;
   margin-bottom: 1em;
   border-radius: 0.4em;

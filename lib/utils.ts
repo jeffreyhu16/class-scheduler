@@ -1,5 +1,5 @@
 import { ClassFormInputs } from "@/components/ClassForm";
-import { Class, Student, Coach, Location } from "@prisma/client";
+import { Class, Student, Coach, Location, ClassType } from "@prisma/client";
 import { DateTime } from "luxon";
 import { ClassI, CreateClassProps, UpdateClassProps } from "./data/types";
 
@@ -52,4 +52,11 @@ export const convertFormInputs = (form: ClassFormInputs, editClassId?: number): 
     note: form.note,
     isBreak: form.isBreak,
   };
+};
+
+export const parseClassType = (classType: ClassType) => {
+  return classType
+    .split("_")
+    .map((text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase())
+    .join(" ");
 };
