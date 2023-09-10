@@ -4,8 +4,8 @@ import axios from "axios";
 interface GetClassArgs {
   startDate: number;
   days: number;
-  locationId?: number;
-  coachId?: number;
+  locationId?: string;
+  coachId?: string;
 }
 
 export const getClasses = createAsyncThunk("class/getClasses", async (data: GetClassArgs, thunkAPI) => {
