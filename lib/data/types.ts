@@ -68,7 +68,7 @@ export interface UpdateClassProps {
   startTime?: number;
   endTime?: number;
   coachId?: string;
-  studentIds?: number[];
+  studentIds?: string[];
   locationId?: string;
   courtId?: number;
   note?: string;

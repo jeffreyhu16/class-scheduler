@@ -51,5 +51,5 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
-  return id ? NextResponse.json(await deleteClass(Number(id))) : NextResponse.error();
+  return id ? NextResponse.json(await deleteClass(id)) : NextResponse.error();
 }

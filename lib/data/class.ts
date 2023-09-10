@@ -117,7 +117,7 @@ export const updateClass = async ({
   }
 };
 
-export const deleteClass = async (id: number): Promise<Class | undefined> => {
+export const deleteClass = async (id: string): Promise<Class | undefined> => {
   try {
     return await prisma.class.delete({ where: { id } });
   } catch (error) {
