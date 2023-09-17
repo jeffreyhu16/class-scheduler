@@ -10,11 +10,8 @@ export const getRequestValue = (req: any, domain: string, key: string) => {
   return undefined;
 };
 
-export const checkRequestBody = <T>(body: any, fields: string[]): body is T => {
-  const checkResult = Object.keys(body).every((key) => fields.includes(key));
-  console.log("checkResult:", checkResult);
-  return Object.keys(body).every((key) => fields.includes(key));
-  // return fields.every((field) => !!body[field]);
+export const checkRequestBody = <T>(body: any, requiredFields: string[]): body is T => {
+  return requiredFields.every((field) => body[field] != undefined);
 };
 
 export const convertClass = (
