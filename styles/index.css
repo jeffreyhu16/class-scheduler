@@ -17,9 +17,10 @@ body {
   background: #003567;
 }
 
+button,
 input,
 textarea {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
 }
 
 h1,
@@ -588,7 +589,6 @@ button {
   background: #004b8f;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
-  font-family: "Lato";
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -604,6 +604,7 @@ button {
 .form-cancel-button {
   width: 25%;
   height: 2rem;
+  font-weight: 700;
 }
 
 .form-submit-button:hover,
@@ -616,6 +617,7 @@ button {
   padding: 0.8em 1em;
   background: #a40003;
   border-radius: 2rem;
+  font-weight: 700;
 }
 
 .form-delete-button:hover {
