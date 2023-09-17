@@ -25,7 +25,7 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
       if (startOfWeek && day && calendarView === "week") {
         getClassesArgs = {
           startDate: DateTime.fromObject(startOfWeek).toMillis(),
-          days: day,
+          day,
           coachId: coach?.id,
           locationId: location?.id,
         };
@@ -34,7 +34,7 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
       if (currentDate && calendarView === "day") {
         getClassesArgs = {
           startDate: DateTime.fromObject(currentDate).toMillis(),
-          days: 0,
+          day: 0,
           coachId: coach?.id,
           locationId: location?.id,
         };

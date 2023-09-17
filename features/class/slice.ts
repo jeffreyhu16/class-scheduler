@@ -25,8 +25,8 @@ const classSlice = createSlice({
       })
       .addCase(getClasses.fulfilled, (state, { payload }) => {
         state.appState = "complete";
-        if (payload?.days != undefined) {
-          state.data[payload.days] = payload?.classes;
+        if (payload?.day != undefined) {
+          state.data[payload.day] = payload?.classes;
         }
       })
       .addCase(getClasses.rejected, (state, { payload }) => {

@@ -6,12 +6,14 @@ import { convertClass } from "../utils";
 
 export const getClasses = async ({
   startDate,
-  days,
+  day,
   coachId,
   locationId,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
-  const start = new Date(startDate);
-  const end = DateTime.fromMillis(startDate).plus({ days: days }).toJSDate();
+  const start = DateTime.fromMillis(startDate)
+    .plus({ days: day - 1 })
+    .toJSDate();
+  const end = DateTime.fromJSDate(start).plus({ days: 1 }).toJSDate();
 
   try {
     const classes = await prisma.class.findMany({
@@ -67,7 +69,7 @@ export const createClass = async ({
         location: true,
       },
     });
-    console.log('created class:', c)
+    console.log("created class:", c);
     return convertClass(c);
   } catch (error) {
     console.log(error);
@@ -129,7 +131,7 @@ export const copyClasses = async (copyStart: number, weeks: number): Promise<Cla
   try {
     const prevClasses = await getClasses({
       startDate: copyStart,
-      days: weeks * 7,
+      day: weeks * 7,
     });
 
     if (!prevClasses) return undefined;

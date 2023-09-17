@@ -1,17 +1,11 @@
+import { GetClassesProps } from "@/lib/data/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface GetClassArgs {
-  startDate: number;
-  days: number;
-  locationId?: string;
-  coachId?: string;
-}
-
-export const getClasses = createAsyncThunk("class/getClasses", async (data: GetClassArgs, thunkAPI) => {
-  const { startDate, days, locationId, coachId } = data;
+export const getClasses = createAsyncThunk("class/getClasses", async (data: GetClassesProps, thunkAPI) => {
+  const { startDate, day, locationId, coachId } = data;
   try {
-    let query = `/api/class/classes?startDate=${startDate}&days=${days}`;
+    let query = `/api/class/classes?startDate=${startDate}&day=${day}`;
 
     if (locationId) {
       query = query.concat(`&locationId=${locationId}`);
@@ -21,7 +15,7 @@ export const getClasses = createAsyncThunk("class/getClasses", async (data: GetC
     }
     const { data: classes } = await axios.get(query);
 
-    return { classes, days };
+    return { classes, day };
   } catch (err) {
     thunkAPI.rejectWithValue(err);
   }
