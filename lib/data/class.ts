@@ -1,7 +1,7 @@
 import { Class, Student } from "@prisma/client";
 import { prisma } from "../prisma";
 import { DateTime } from "luxon";
-import { ClassI, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
+import { ClassI, CopyClassParams, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
 import { convertClass } from "../utils";
 
 export const getClasses = async ({
@@ -127,7 +127,7 @@ export const deleteClass = async (id: string): Promise<Class | undefined> => {
   }
 };
 
-export const copyClasses = async (copyStart: number, weeks: number): Promise<ClassI[] | void> => {
+export const copyClasses = async ({ copyStart, weeks }: CopyClassParams): Promise<ClassI[] | void> => {
   try {
     const prevClasses = await getClasses({
       startDate: copyStart,

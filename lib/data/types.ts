@@ -73,3 +73,8 @@ export interface UpdateClassProps {
   courtId?: number;
   note?: string;
 }
+
+export interface CopyClassParams {
+  copyStart: number;
+  weeks: number;
+}
