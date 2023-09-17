@@ -14,38 +14,20 @@ export async function POST(req: Request) {
       "students",
       "locationId",
       "courtId",
-      "note",
       "isBreak",
     ])
   ) {
     return NextResponse.error();
   }
-  const { type, startTime, endTime, coachId, students, locationId, courtId, note, isBreak } = requestBody;
-  return NextResponse.json(
-    await createClass({ type, startTime, endTime, coachId, students, locationId, courtId, note, isBreak })
-  );
+  return NextResponse.json(await createClass(requestBody));
 }
 
 export async function PUT(req: Request) {
-  if (
-    !checkRequestBody<UpdateClassProps>(req.body, [
-      "id",
-      "type",
-      "startTime",
-      "endTime",
-      "coachId",
-      "studentIds",
-      "locationId",
-      "courtId",
-      "note",
-    ])
-  ) {
+  const requestBody = await req.json();
+  if (!checkRequestBody<UpdateClassProps>(requestBody, ["id"])) {
     return NextResponse.error();
   }
-  const { id, type, startTime, endTime, coachId, studentIds, locationId, courtId, note } = req.body;
-  return NextResponse.json(
-    await updateClass({ id, type, startTime, endTime, coachId, studentIds, locationId, courtId, note })
-  );
+  return NextResponse.json(await updateClass(requestBody));
 }
 
 export async function DELETE(req: Request) {

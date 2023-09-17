@@ -86,6 +86,7 @@ export const updateClass = async ({
   locationId,
   courtId,
   note,
+  isBreak,
 }: UpdateClassProps): Promise<ClassI | undefined> => {
   try {
     const c = await prisma.class.update({
@@ -105,6 +106,7 @@ export const updateClass = async ({
         locationId,
         courtId,
         note,
+        isBreak,
       },
       include: {
         students: true,

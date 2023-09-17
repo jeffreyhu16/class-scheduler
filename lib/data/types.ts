@@ -72,6 +72,7 @@ export interface UpdateClassProps {
   locationId?: string;
   courtId?: number;
   note?: string;
+  isBreak?: boolean;
 }
 
 export interface CopyClassParams {
