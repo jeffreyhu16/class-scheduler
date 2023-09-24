@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, CSSProperties, Dispatch, SetStateAction } from "react";
+import { useState, CSSProperties, Dispatch, SetStateAction } from "react";
 import { setCalendarView, setLocation, setCoach, ListItem } from "@/features/view/slice";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { ActiveState } from "./HeaderNav";
 
 export interface DropdownProps {
@@ -14,33 +14,35 @@ export interface DropdownProps {
 }
 
 export default function Dropdown({ label, listData, active, setActive }: DropdownProps) {
-  const [isOn, setIsOn] = React.useState(false);
+  const [isOn, setIsOn] = useState<boolean>(false);
   const [hoverIndex, setHoverIndex] = useState<number>(-1);
+
+  const dispatch = useAppDispatch();
   const { coach, coachData, location, locationData } = useAppSelector((state) => state.views);
 
   function handleClick(itemName: string, index: number) {
     if (label === "location") {
       if (itemName === "all" && !coach) {
-        setLocation(undefined);
-        setCalendarView("day");
+        dispatch(setLocation(undefined));
+        dispatch(setCalendarView("day"));
         setActive((prev) => ({
           ...prev,
           view: "day",
         }));
       }
-      setLocation(locationData?.find((location) => location.name === itemName));
+      dispatch(setLocation(locationData?.find((location) => location.name === itemName)));
     }
 
     if (label === "coach") {
       if (itemName === "all" && !location) {
-        setCoach(undefined);
-        setCalendarView("day");
+        dispatch(setCoach(undefined));
+        dispatch(setCalendarView("day"));
         setActive((prev) => ({
           ...prev,
           view: "day",
         }));
       }
-      setCoach(coachData?.find((coach) => coach.name === itemName));
+      dispatch(setCoach(coachData?.find((coach) => coach.name === itemName)));
     }
 
     setActive((prev) => ({

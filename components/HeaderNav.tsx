@@ -1,7 +1,7 @@
 "use client";
 import { CSSProperties, useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
-import { DateTime, Settings, ToObjectOutput } from "luxon";
+import { DateTime, ToObjectOutput } from "luxon";
 import { faBars, faAngleLeft, faAngleRight, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
@@ -79,9 +79,9 @@ export default function HeaderNav() {
     }
     if (calendarView === "day") {
       if (direction === "next") {
-        setCurrentDate(nextDay);
+        dispatch(setCurrentDate(nextDay));
       } else {
-        setCurrentDate(prevDay);
+        dispatch(setCurrentDate(prevDay));
       }
     }
   }
