@@ -46,6 +46,7 @@ export interface GetClassesProps {
   day: number;
   coachId?: string;
   locationId?: string;
+  courtId?: number;
 }
 
 export interface CreateClassProps {

@@ -9,6 +9,7 @@ export const getClasses = async ({
   day,
   coachId,
   locationId,
+  courtId,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
   const start = DateTime.fromMillis(startDate)
     .plus({ days: day - 1 })
@@ -19,8 +20,9 @@ export const getClasses = async ({
     const classes = await prisma.class.findMany({
       where: {
         startTime: { gt: start, lt: end },
-        coachId: coachId,
-        locationId: locationId,
+        coachId,
+        locationId,
+        courtId,
       },
       include: {
         students: true,
