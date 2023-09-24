@@ -2,31 +2,36 @@
 import { useState } from "react";
 import ClassForm from "../ClassForm";
 import { DateTime } from "luxon";
-import { ClassI, LocationI } from "@/lib/data/types";
+import { ClassI } from "@/lib/data/types";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setGlowState } from "@/features/view/slice";
+import { useClasses } from "@/hooks/swr";
 
 export interface CalendarQuarterHourProps {
   day?: number;
-  location?: LocationI;
-  courtNum?: number;
+  locationId?: string;
+  courtId?: number;
   quarterHour: number;
-  classData: ClassI[];
 }
 
-export default function CalendarQuarterHour({
-  day = 0,
-  location,
-  courtNum,
-  quarterHour,
-  classData,
-}: CalendarQuarterHourProps) {
-  const { calendarView, coach, printMode } = useAppSelector((state) => state.views);
+export default function CalendarQuarterHour({ day = 0, courtId, locationId, quarterHour }: CalendarQuarterHourProps) {
+  const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
+  const { calendarView, coach, location, printMode } = useAppSelector((state) => state.views);
+
+  const { classData, isLoading, error, mutate } = useClasses({
+    startDate: calendarView === "week" ? startOfWeek : currentDate,
+    day,
+    coachId: coach?.id,
+    locationId: locationId ?? location?.id,
+    courtId,
+  });
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
   const dispatch = useAppDispatch();
+
+  if (isLoading || error) return <></>;
 
   let startTimeTarget: ClassI[] = [];
   let midTimeTarget: ClassI[] = [];
@@ -36,7 +41,7 @@ export default function CalendarQuarterHour({
   let isStartTime, isMidTime, isEndTime, duration, showLocation;
   if (classData.length > 0) {
     // filter startTime //
-    startTimeTarget = classData.filter((dayTarget) => {
+    startTimeTarget = classData.filter((dayTarget: ClassI) => {
       const startDateTime = DateTime.fromMillis(dayTarget.startTime);
       const quarterInterval = startDateTime.minute / 15;
       const startTimeQuarterHour = (startDateTime.hour - 7) * 4 + quarterInterval;
@@ -46,7 +51,7 @@ export default function CalendarQuarterHour({
     isStartTime = startTimeTarget.length ? true : false;
 
     // filter midTime //
-    midTimeTarget = classData.filter((dayTarget) => {
+    midTimeTarget = classData.filter((dayTarget: ClassI) => {
       const startDateTime = DateTime.fromMillis(dayTarget.startTime);
       const endDateTime = DateTime.fromMillis(dayTarget.endTime);
       const quarterInterval = startDateTime.minute / 15;
@@ -70,7 +75,7 @@ export default function CalendarQuarterHour({
     isMidTime = midTimeTarget.length ? true : false;
 
     // filter endTime //
-    endTimeTarget = classData.filter((dayTarget) => {
+    endTimeTarget = classData.filter((dayTarget: ClassI) => {
       const endDateTime = DateTime.fromMillis(dayTarget.endTime);
       const quarterInterval = endDateTime.minute / 15;
       const endTimeQuarterHour = (endDateTime.hour - 7) * 4 + quarterInterval;
@@ -156,7 +161,7 @@ export default function CalendarQuarterHour({
             setGlowState({
               dayIndex: day,
               location: location?.key,
-              courtIndex: courtNum,
+              courtIndex: courtId,
               quarterHourIndex: quarterHour,
               isGlow: true,
             })
@@ -168,7 +173,7 @@ export default function CalendarQuarterHour({
             setGlowState({
               dayIndex: day,
               location: location?.key,
-              courtIndex: courtNum,
+              courtIndex: courtId,
               quarterHourIndex: quarterHour,
               isGlow: false,
             })
@@ -177,7 +182,7 @@ export default function CalendarQuarterHour({
         className={
           calendarView === "week"
             ? `calendar-quarter-hour day-${day} quarter-hour-${quarterHour}`
-            : `calendar-quarter-hour ${location?.name}-${courtNum} quarter-hour-${quarterHour}`
+            : `calendar-quarter-hour ${location?.name}-${courtId} quarter-hour-${quarterHour}`
         }
         onClick={() => setIsFormOpen((prev) => !prev)}
         style={styles.container}>
