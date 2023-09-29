@@ -5,8 +5,6 @@ import { getCoaches, getLocations } from "./thunks";
 export type CalendarView = "day" | "week";
 
 export type ListItem = { name: string };
-export type CoachItem = ListItem | CoachI;
-export type LocationItem = ListItem | LocationI;
 
 export interface BreakPointI {
   [breakpoint: number]: boolean;
@@ -28,9 +26,9 @@ export interface SetGlowStateProps {
 
 interface ViewState {
   calendarView: CalendarView;
-  coach?: CoachI;
+  coach?: CoachI | null;
   coachData?: CoachI[];
-  location?: LocationI;
+  location?: LocationI | null;
   locationData?: LocationI[];
   breakPoint: BreakPointI;
   printMode: boolean;
@@ -39,13 +37,6 @@ interface ViewState {
 
 const initialState: ViewState = {
   calendarView: "week",
-  coach: undefined,
-  location: undefined,
-  // breakPoint: {
-  //   1280: window.innerWidth > 1280,
-  //   780: window.innerWidth > 780,
-  //   660: window.innerWidth > 660,
-  // },
   breakPoint: {},
   printMode: false,
   glowState: {
@@ -62,13 +53,13 @@ const viewSlice = createSlice({
     setCalendarView: (state, action: PayloadAction<CalendarView>) => {
       state.calendarView = action.payload;
     },
-    setCoach: (state, action: PayloadAction<CoachI | undefined>) => {
+    setCoach: (state, action: PayloadAction<CoachI | null>) => {
       state.coach = action.payload;
     },
     setCoachData: (state, action: PayloadAction<CoachI[]>) => {
       state.coachData = action.payload;
     },
-    setLocation: (state, action: PayloadAction<LocationI | undefined>) => {
+    setLocation: (state, action: PayloadAction<LocationI | null>) => {
       state.location = action.payload;
     },
     setLocationData: (state, action: PayloadAction<LocationI[]>) => {

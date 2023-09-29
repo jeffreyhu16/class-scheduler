@@ -10,8 +10,8 @@ export default function Calendar() {
   const { calendarView, coach, location, printMode, breakPoint } = useAppSelector((state) => state.views);
 
   const camberwell = location?.name === "camberwell";
-  const wideView = calendarView === "week" && !coach;
-  const scrollView = calendarView === "week" && !coach && camberwell;
+  const wideView = calendarView === "week" && coach === null;
+  const scrollView = calendarView === "week" && coach === null && camberwell;
 
   let flexView;
   if (scrollView) {
@@ -24,13 +24,13 @@ export default function Calendar() {
 
   const styles: { [key: string]: CSSProperties } = {
     calendar: {
-      width: wideView || !breakPoint[1280] ? "100%" : "calc(100% - 300px)",
+      ...(wideView && { width: "100%" }),
     },
     label: {
       fontSize: printMode ? "1.25rem" : "1rem",
     },
     flexView: {
-      width: flexView,
+      ...(scrollView && { width: "180em" }),
     },
   };
 

@@ -58,13 +58,13 @@ export default function HeaderNav() {
 
     if (view === "week" && locationData) {
       setLocation(locationData[1]);
-      setCoach(undefined);
+      setCoach(null);
       setActiveState({ view: "week", location: 1, coach: 1 });
     }
 
     if (view === "day") {
-      setLocation(undefined);
-      setCoach(undefined);
+      setLocation(null);
+      setCoach(null);
       setActiveState({ view: "day", location: 0, coach: 1 });
     }
   }
@@ -159,22 +159,19 @@ export default function HeaderNav() {
         )}
         {breakPoint[660] && (
           <div className="header-dropdown-group">
-            {locationData && (
-              <Dropdown
-                label="location"
-                listData={[{ name: "all" }, ...locationData]}
-                active={activeState}
-                setActive={setActiveState}
-              />
-            )}
-            {coachData && (
-              <Dropdown
-                label="coach"
-                listData={[{ name: "all" }, ...coachData]}
-                active={activeState}
-                setActive={setActiveState}
-              />
-            )}
+            <Dropdown
+              label="location"
+              listData={[{ name: "all" }, ...(locationData?.map((location) => ({ name: location.name })) || [])]}
+              active={activeState}
+              setActive={setActiveState}
+            />
+
+            <Dropdown
+              label="coach"
+              listData={[{ name: "all" }, ...(coachData?.map((coach) => ({ name: coach.name })) || [])]}
+              active={activeState}
+              setActive={setActiveState}
+            />
           </div>
         )}
       </div>

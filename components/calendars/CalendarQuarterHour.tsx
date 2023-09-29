@@ -188,7 +188,9 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
         style={styles.container}>
         {isStartTime && (
           <div className="calendar-class-info" style={styles.classInfo}>
-            {classTimeObj && !coach && <div className="calendar-class-info-coach-name">{classTimeObj.coach.name}</div>}
+            {classTimeObj && coach === null && (
+              <div className="calendar-class-info-coach-name">{classTimeObj.coach.name}</div>
+            )}
             <div className="calendar-class-info-class-period">{`${startString}-${endString}`}</div>
             <div className="calendar-class-info-location">
               {classTimeObj && showLocation && classTimeObj.location.name}

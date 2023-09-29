@@ -21,7 +21,7 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
         calendarCourts.push(<CalendarCourt key={`${location.name}-${j}`} location={location} courtId={j} />);
       }
     });
-  } else if (!coach && location) {
+  } else if (location && coach === null) {
     // Week view expanded
     const { courtCount } = location;
     calendarCourts = [...Array(courtCount)].map((v, i) => (
@@ -36,8 +36,8 @@ export default function CalendarDay({ day = 0 }: CalendarDayProps) {
 
   const styles = {
     width: calendarView === "day" ? "100%" : "calc(100% / 7)",
-    display: calendarView === "day" || !coach ? "flex" : "block",
-    borderRight: calendarView !== "day" && !coach ? "1px solid rgb(201,255,227,0.4)" : "none",
+    display: calendarView === "day" || coach === null ? "flex" : "block",
+    borderRight: calendarView !== "day" && coach === null ? "1px solid rgb(201,255,227,0.4)" : "none",
   };
 
   return (

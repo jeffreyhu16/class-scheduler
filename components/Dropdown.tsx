@@ -21,28 +21,42 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
   const { coach, coachData, location, locationData } = useAppSelector((state) => state.views);
 
   function handleClick(itemName: string, index: number) {
+    if (!coachData || !locationData) return;
+
     if (label === "location") {
-      if (itemName === "all" && !coach) {
-        dispatch(setLocation(undefined));
+      if (itemName === "all" && coach === null) {
+        dispatch(setLocation(null));
         dispatch(setCalendarView("day"));
         setActive((prev) => ({
           ...prev,
           view: "day",
         }));
+        return;
       }
-      dispatch(setLocation(locationData?.find((location) => location.name === itemName)));
+
+      const locationToSet = locationData.find((location) => location.name === itemName);
+
+      if (!locationToSet) return;
+
+      dispatch(setLocation(locationToSet));
     }
 
     if (label === "coach") {
-      if (itemName === "all" && !location) {
-        dispatch(setCoach(undefined));
+      if (itemName === "all" && location == null) {
+        dispatch(setCoach(null));
         dispatch(setCalendarView("day"));
         setActive((prev) => ({
           ...prev,
           view: "day",
         }));
+        return;
       }
-      dispatch(setCoach(coachData?.find((coach) => coach.name === itemName)));
+
+      const coachToSet = coachData.find((coach) => coach.name === itemName);
+
+      if (!coachToSet) return;
+
+      dispatch(setCoach(coachToSet));
     }
 
     setActive((prev) => ({
@@ -58,7 +72,7 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
   };
 
   return (
-    <div className="dropdown-menu" onClick={() => setIsOn((prev) => !prev)}>
+    <button className="dropdown-menu" disabled={listData.length <= 1} onClick={() => setIsOn((prev) => !prev)}>
       <div className="dropdown-menu-label">{label}</div>
       <FontAwesomeIcon icon={faCaretDown} className="icon-caret-down" />
       <div className="dropdown-menu-list" style={listStyles}>
@@ -80,6 +94,6 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
           );
         })}
       </div>
-    </div>
+    </button>
   );
 }

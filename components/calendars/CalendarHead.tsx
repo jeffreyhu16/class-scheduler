@@ -74,7 +74,7 @@ export default function CalendarHead() {
               <div className="calendar-head-day">{day}</div>
               <div className="calendar-head-date">{date.day}</div>
 
-              {!coach && location && (
+              {location && coach === null && (
                 <div className="calendar-head-court-day">
                   <CalendarHeadCourt day={i + 1} location={location} />
                 </div>

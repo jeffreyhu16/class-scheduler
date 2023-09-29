@@ -29,7 +29,7 @@ export default function CalendarCopy() {
   }
 
   const copyStyles = {
-    paddingTop: calendarView === "week" && !coach ? "0.3em" : "0.2em",
+    paddingTop: calendarView === "week" && coach === null ? "0.3em" : "0.2em",
   };
   const popupStyles: CSSProperties = {
     opacity: modalIsOpen ? "1" : "0",
