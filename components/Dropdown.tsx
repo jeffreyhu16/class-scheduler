@@ -33,12 +33,7 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
         }));
         return;
       }
-
-      const locationToSet = locationData.find((location) => location.name === itemName);
-
-      if (!locationToSet) return;
-
-      dispatch(setLocation(locationToSet));
+      dispatch(setLocation(locationData.find((location) => location.name === itemName) || null));
     }
 
     if (label === "coach") {
@@ -51,12 +46,7 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
         }));
         return;
       }
-
-      const coachToSet = coachData.find((coach) => coach.name === itemName);
-
-      if (!coachToSet) return;
-
-      dispatch(setCoach(coachToSet));
+      dispatch(setCoach(coachData.find((coach) => coach.name === itemName) || null));
     }
 
     setActive((prev) => ({
