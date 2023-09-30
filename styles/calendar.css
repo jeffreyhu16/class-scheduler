@@ -1,8 +1,11 @@
 .react-calendar__navigation {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   margin-bottom: 1em;
+}
+
+.react-calendar__navigation__label {
+  letter-spacing: 0.15rem;
 }
 
 .react-calendar__navigation__arrow {

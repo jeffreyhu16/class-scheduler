@@ -7,20 +7,11 @@ import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { useAppSelector } from "@/redux/store";
 
 export default function Calendar() {
-  const { calendarView, coach, location, printMode, breakPoint } = useAppSelector((state) => state.views);
+  const { calendarView, coach, location, printMode } = useAppSelector((state) => state.views);
 
-  const camberwell = location?.name === "camberwell";
+  const camberwell = location?.key === "camberwell";
   const wideView = calendarView === "week" && coach === null;
   const scrollView = calendarView === "week" && coach === null && camberwell;
-
-  let flexView;
-  if (scrollView) {
-    flexView = "180em";
-  } else if (!breakPoint[780]) {
-    flexView = "41.2875em";
-  } else {
-    flexView = "100%";
-  }
 
   const styles: { [key: string]: CSSProperties } = {
     calendar: {
@@ -28,6 +19,7 @@ export default function Calendar() {
     },
     label: {
       fontSize: printMode ? "1.25rem" : "1rem",
+      opacity: scrollView ? "0" : "1",
     },
     flexView: {
       ...(scrollView && { width: "180em" }),
@@ -37,13 +29,12 @@ export default function Calendar() {
   return (
     <ScrollSync>
       <div id="calendar" className="calendar" style={styles.calendar}>
-        {coach && (
-          <div className="coach-label-container">
-            <div className="coach-label" style={styles.label}>
-              {coach.name}
-            </div>
+        <div className="coach-label-container">
+          <div className="coach-label" style={styles.label}>
+            {coach?.name}
           </div>
-        )}
+        </div>
+
         <div className="calendar-head-sticky">
           <ScrollSyncPane>
             <div className="calendar-head-scroll">

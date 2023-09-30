@@ -6,15 +6,13 @@ import { useAppSelector } from "@/redux/store";
 
 export default function Main() {
   const { appState } = useAppSelector((state) => state.classes);
-  const { calendarView, coach, breakPoint } = useAppSelector((state) => state.views);
+  const { calendarView, coach, location, printMode } = useAppSelector((state) => state.views);
 
-  const styles = {
-    display: appState === "complete" ? "flex" : "hidden",
-  };
+  const wideView = calendarView === "week" && coach === null;
 
   return (
-    <main className="main" style={styles}>
-      {(calendarView === "day" || !!coach) && breakPoint[1280] && <Sidebar />}
+    <main className="main">
+      {!wideView && <Sidebar />}
       <Calendar />
     </main>
   );

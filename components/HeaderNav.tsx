@@ -24,7 +24,7 @@ export interface HoverState {
 
 export default function HeaderNav() {
   const dispatch = useAppDispatch();
-  const { calendarView, locationData, coachData, breakPoint, printMode } = useAppSelector((state) => state.views);
+  const { calendarView, locationData, coachData, printMode } = useAppSelector((state) => state.views);
   const { startOfWeek, currentDate } = useAppSelector((state) => state.dates);
 
   const [activeState, setActiveState] = useState<ActiveState>({
@@ -132,48 +132,44 @@ export default function HeaderNav() {
   return (
     <div className="header-nav">
       <div className="header-left-group">
-        {!breakPoint[780] && (
-          <div className="header-nav-dropdown">
-            <FontAwesomeIcon icon={faBars} className="icon-nav-dropdown" />
-          </div>
-        )}
-        {breakPoint[780] && (
-          <div className="header-toggle-group">
-            <div
-              className="header-toggle-day"
-              onClick={() => toggleView("day")}
-              onMouseEnter={() => setHoverState((prev) => ({ ...prev, day: true }))}
-              onMouseLeave={() => setHoverState((prev) => ({ ...prev, day: false }))}
-              style={dayStyles}>
-              Day
-            </div>
-            <div
-              className="header-toggle-week"
-              onClick={() => toggleView("week")}
-              onMouseEnter={() => setHoverState((prev) => ({ ...prev, week: true }))}
-              onMouseLeave={() => setHoverState((prev) => ({ ...prev, week: false }))}
-              style={weekStyles}>
-              Week
-            </div>
-          </div>
-        )}
-        {breakPoint[660] && (
-          <div className="header-dropdown-group">
-            <Dropdown
-              label="location"
-              listData={[{ name: "all" }, ...(locationData?.map((location) => ({ name: location.name })) || [])]}
-              active={activeState}
-              setActive={setActiveState}
-            />
+        <div className="header-nav-dropdown">
+          <FontAwesomeIcon icon={faBars} className="icon-nav-dropdown" />
+        </div>
 
-            <Dropdown
-              label="coach"
-              listData={[{ name: "all" }, ...(coachData?.map((coach) => ({ name: coach.name })) || [])]}
-              active={activeState}
-              setActive={setActiveState}
-            />
+        <div className="header-toggle-group">
+          <div
+            className="header-toggle-day"
+            onClick={() => toggleView("day")}
+            onMouseEnter={() => setHoverState((prev) => ({ ...prev, day: true }))}
+            onMouseLeave={() => setHoverState((prev) => ({ ...prev, day: false }))}
+            style={dayStyles}>
+            Day
           </div>
-        )}
+          <div
+            className="header-toggle-week"
+            onClick={() => toggleView("week")}
+            onMouseEnter={() => setHoverState((prev) => ({ ...prev, week: true }))}
+            onMouseLeave={() => setHoverState((prev) => ({ ...prev, week: false }))}
+            style={weekStyles}>
+            Week
+          </div>
+        </div>
+
+        <div className="header-dropdown-group">
+          <Dropdown
+            label="location"
+            listData={[{ name: "all" }, ...(locationData?.map((location) => ({ name: location.name })) || [])]}
+            active={activeState}
+            setActive={setActiveState}
+          />
+
+          <Dropdown
+            label="coach"
+            listData={[{ name: "all" }, ...(coachData?.map((coach) => ({ name: coach.name })) || [])]}
+            active={activeState}
+            setActive={setActiveState}
+          />
+        </div>
       </div>
       <div className="header-right-group">
         <div className="header-action-group">

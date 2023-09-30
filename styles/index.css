@@ -29,10 +29,6 @@ p {
   margin-top: 0;
 }
 
-.header-container {
-  /* padding: 1em 5em; */
-}
-
 h1 {
   margin-bottom: 0;
 }
@@ -43,6 +39,7 @@ h1 {
   cursor: default;
   cursor: pointer;
   position: relative;
+  font-size: 1.2rem;
 }
 
 .dropdown-menu:hover {
@@ -52,6 +49,7 @@ h1 {
 .dropdown-menu-list-item,
 .dropdown-menu-label {
   text-transform: capitalize;
+  text-align: left;
 }
 
 .dropdown-menu-list {
@@ -84,17 +82,15 @@ h1 {
   margin: 0.2em;
 }
 
-/* .dropdown-menu-list-item:hover {
-    background-color: #c9e5ff;
-    color: #00182f;
-} */
-
 .header,
 .main {
-  display: none;
+  display: flex;
   margin: 0.7em auto;
-  justify-content: center;
   width: min(97%, 100rem);
+}
+
+.header {
+  height: 70px;
 }
 
 @media (max-width: 1280px) {
@@ -134,15 +130,14 @@ h1 {
 }
 
 .header-nav-dropdown {
+  display: none;
   padding: 0.4em 0.6em;
   border-radius: 2rem;
-  background: #004b8f;
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.3);
 }
 
 .header-left-group {
   font-size: 1.2rem;
-  width: 26rem;
+  gap: 1em;
 }
 
 .header-left-group,
@@ -172,37 +167,19 @@ h1 {
 }
 
 .header-toggle-group {
-  width: 37.5%;
+  gap: 0.75em;
 }
 
 .header-dropdown-group {
-  width: 57%;
+  gap: 0.75em;
+}
+
+.header-date {
+  gap: 0.6em;
 }
 
 .icon-caret-down {
   margin-left: 0.4em;
-}
-
-@media (max-width: 1280px) {
-  .header-nav {
-    width: 100%;
-    padding: 1.1em 1em 1.1em 1.2em;
-  }
-}
-
-@media (max-width: 780px) {
-  .header-left-group {
-    width: 16em;
-  }
-  .header-dropdown-group {
-    width: 12.5em;
-  }
-}
-
-@media (max-width: 660px) {
-  .header-left-group {
-    width: auto;
-  }
 }
 
 .header-action-group {
@@ -211,16 +188,58 @@ h1 {
   margin-right: 0.75em;
 }
 
+@media (max-width: 1280px) {
+  .header-title,
+  .sidebar {
+    display: none;
+  }
+  .header-nav {
+    width: 100%;
+  }
+}
+
+@media (max-width: 916px) {
+  .header-nav-dropdown {
+    display: block;
+  }
+  .header-left-group {
+    justify-content: start;
+  }
+  .header-toggle-group {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .header-dropdown-group {
+    display: none;
+  }
+}
+
+@media (max-width: 660px) {
+  .header-left-group {
+    width: auto;
+  }
+  .header-dropdown-group {
+    display: none;
+  }
+}
+
+@media (max-width: 548px) {
+  .header-action-group {
+    display: none;
+  }
+  .header-date-year {
+    display: none;
+  }
+}
+
 .icon-export {
   padding: 0.6em;
 }
 
 .header-right-group {
   font-size: 1.2rem;
-}
-
-.header-date-month {
-  margin: 0 0.6em;
 }
 
 .toggle-period {
@@ -267,8 +286,15 @@ h1 {
 
 .calendar {
   height: 100%;
+  width: calc(100% - 300px);
   padding: 1em;
   position: relative;
+}
+
+@media (max-width: 1280px) {
+  .calendar {
+    width: 100%;
+  }
 }
 
 @media (max-width: 660px) {
@@ -294,7 +320,6 @@ h1 {
 }
 
 .calendar-head-flex {
-  /* overflow: auto; */
 }
 
 .calendar-head {
@@ -319,6 +344,13 @@ h1 {
 
 .calendar-head-court-day {
   display: flex;
+}
+
+@media (max-width: 800px) {
+  .calendar-head-flex,
+  .calendar-body-flex {
+    width: 100rem;
+  }
 }
 
 .calendar-head-group,
@@ -397,16 +429,6 @@ h1 {
   padding: 0.6em;
 }
 
-@media (max-width: 660px) {
-  .calendar-copy {
-    font-size: 0.8rem;
-  }
-
-  .icon-copy {
-    font-size: 1rem;
-  }
-}
-
 .coach-label-container {
   position: relative;
   vertical-align: top;
@@ -433,22 +455,12 @@ h1 {
   padding: 0.12em 0.8rem 0 0;
 }
 
-.calendar-time-quarter:nth-of-type(2n),
-.calendar-time-quarter:nth-of-type(4n + 3) {
-  /* text-shadow: 0 0 0.5rem #fff; */
-  opacity: 0;
-}
-
 .calendar-time-quarter:nth-of-type(4n + 1) {
   font-size: 1.2rem;
   opacity: 1 !important;
 }
 
 @media (max-width: 660px) {
-  .calendar-time {
-    font-size: 0.8rem;
-  }
-
   .calendar-time-quarter:nth-of-type(4n + 1) {
     font-size: 1rem;
   }
@@ -461,7 +473,6 @@ h1 {
 .calendar-quarter-hour {
   position: relative;
   height: calc(100% / 64);
-  /* border-left: inherit; */
 }
 
 .quarter-hour-1 {
@@ -561,7 +572,6 @@ h1 {
   border: none;
   margin-bottom: 1.5em;
   text-indent: 0.8rem;
-  /* outline: red auto 1px; */
 }
 
 .form-double,
@@ -588,7 +598,6 @@ button {
   border: none;
   background: #004b8f;
   text-transform: uppercase;
-  letter-spacing: 0.15rem;
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -605,6 +614,7 @@ button {
   width: 25%;
   height: 2rem;
   font-weight: 700;
+  letter-spacing: 0.15rem;
 }
 
 .form-submit-button:hover,

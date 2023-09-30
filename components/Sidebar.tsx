@@ -8,8 +8,7 @@ import { setCurrentDate, setStartOfWeek } from "@/features/date/slice";
 
 export default function Sidebar() {
   const { presentDate, currentDate } = useAppSelector((state) => state.dates);
-  const [selectDate, setSelectDate] = useState<Date>(DateTime.fromObject(currentDate || {}).toJSDate());
-  const [loading, setLoading] = useState(false);
+  const [selectDate, setSelectDate] = useState<Date>(new Date());
 
   const matchTile = (date: Date) => {
     const tileDate = DateTime.fromISO(date.toISOString());
