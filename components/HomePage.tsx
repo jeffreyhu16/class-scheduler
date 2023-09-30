@@ -15,10 +15,6 @@ export default function HomePage() {
   const { appState } = useAppSelector((state) => state.classes);
 
   useEffect(() => {
-    const startOfWeek = getStartOfWeek();
-    const currentDate = getCurrentDate();
-    dispatch(setStartOfWeek(startOfWeek));
-    dispatch(setCurrentDate(currentDate));
     dispatch(getCoaches());
     dispatch(getLocations());
 
@@ -44,7 +40,7 @@ export default function HomePage() {
       <Header />
       <Main />
 
-      <Backdrop open={appState === "init" || appState === "loading"}>
+      <Backdrop open={false}>
         <CircularProgress color="inherit" />
       </Backdrop>
     </Provider>

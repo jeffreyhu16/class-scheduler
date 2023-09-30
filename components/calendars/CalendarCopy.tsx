@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useAppSelector } from "@/redux/store";
-import { DateTime } from "luxon";
+import DateTime from "lib/date";
 
 export default function CalendarCopy() {
   const router = useRouter();

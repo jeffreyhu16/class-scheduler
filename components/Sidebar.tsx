@@ -1,23 +1,25 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React from "react";
 import Calendar from "react-calendar";
-import { DateTime } from "luxon";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Value } from "react-calendar/dist/cjs/shared/types";
 import { setCurrentDate, setStartOfWeek } from "@/features/date/slice";
+import DateTime from "lib/date";
 
 export default function Sidebar() {
-  const { presentDate, currentDate } = useAppSelector((state) => state.dates);
-  const [selectDate, setSelectDate] = useState<Date>(new Date());
+  const { currentDate } = useAppSelector((state) => state.dates);
+  const dispatch = useAppDispatch();
 
   const matchTile = (date: Date) => {
-    const tileDate = DateTime.fromISO(date.toISOString());
-    if (presentDate) {
-      if (tileDate.equals(DateTime.fromObject(presentDate))) return "present-day-tile";
+    const tileDate = DateTime.fromJSDate(date);
+    const presentDay = DateTime.local();
+
+    if (tileDate.month === presentDay.month && tileDate.day === presentDay.day) {
+      return "present-day-tile";
     }
 
-    if (currentDate) {
-      if (tileDate.equals(DateTime.fromObject(currentDate))) return "select-tile";
+    if (tileDate.month === currentDate.month && tileDate.day === currentDate.day) {
+      return "select-tile";
     }
 
     return "";
@@ -26,18 +28,17 @@ export default function Sidebar() {
   const handleChange = (date: Value) => {
     if (!date || Array.isArray(date)) return;
 
-    setSelectDate(date as Date);
     const currentDate = DateTime.fromJSDate(date);
-    setCurrentDate(currentDate.toObject());
-    setStartOfWeek(currentDate.startOf("week").toObject());
+    dispatch(setCurrentDate(currentDate.toObject()));
+    dispatch(setStartOfWeek(currentDate.startOf("week").toObject()));
   };
 
   return (
     <div className="sidebar">
       <Calendar
-        value={selectDate}
+        value={DateTime.fromObject(currentDate).toJSDate()}
         onChange={handleChange}
-        defaultActiveStartDate={selectDate}
+        activeStartDate={DateTime.fromObject(currentDate).toJSDate()}
         tileClassName={({ date }) => matchTile(date)}
       />
       <ul className="side-list"></ul>

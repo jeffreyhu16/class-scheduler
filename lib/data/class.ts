@@ -1,8 +1,8 @@
 import { Class, Student } from "@prisma/client";
 import { prisma } from "../prisma";
-import { DateTime } from "luxon";
 import { ClassI, CopyClassParams, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
 import { convertClass } from "../utils";
+import DateTime from "lib/date";
 
 export const getClasses = async ({
   startDate,

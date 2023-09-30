@@ -1,16 +1,15 @@
+import { getCurrentDate, getStartOfWeek } from "@/lib/date";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ToObjectOutput } from "luxon";
 
 interface DateState {
-  startOfWeek?: ToObjectOutput;
-  currentDate?: ToObjectOutput;
-  presentDate?: ToObjectOutput;
+  startOfWeek: ToObjectOutput;
+  currentDate: ToObjectOutput;
 }
 
 const initialState: DateState = {
-  startOfWeek: undefined,
-  currentDate: undefined,
-  presentDate: undefined,
+  startOfWeek: getStartOfWeek(),
+  currentDate: getCurrentDate(),
 };
 
 const dateSlice = createSlice({
@@ -23,12 +22,9 @@ const dateSlice = createSlice({
     setCurrentDate: (state, action: PayloadAction<ToObjectOutput>) => {
       state.currentDate = action.payload;
     },
-    setPresentDate: (state, action: PayloadAction<ToObjectOutput>) => {
-      state.presentDate = action.payload;
-    },
   },
 });
 
-export const { setStartOfWeek, setCurrentDate, setPresentDate } = dateSlice.actions;
+export const { setStartOfWeek, setCurrentDate } = dateSlice.actions;
 
 export default dateSlice.reducer;

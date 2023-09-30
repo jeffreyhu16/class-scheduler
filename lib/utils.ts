@@ -1,7 +1,7 @@
 import { ClassFormInputs } from "@/components/ClassForm";
 import { Class, Student, Coach, Location, ClassType } from "@prisma/client";
-import { DateTime } from "luxon";
 import { ClassI, CreateClassProps, UpdateClassProps } from "./data/types";
+import DateTime from "lib/date";
 
 export const getRequestValue = (req: any, domain: string, key: string) => {
   if (req && req[domain]) {

@@ -1,7 +1,7 @@
 "use client";
 import { CSSProperties, useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
-import { DateTime, ToObjectOutput } from "luxon";
+import { ToObjectOutput} from "luxon";
 import { faBars, faAngleLeft, faAngleRight, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
@@ -10,6 +10,7 @@ import CalendarCopy from "./calendars/CalendarCopy";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { CalendarView, setCalendarView, setLocation, setCoach, setPrintMode } from "@/features/view/slice";
 import { setStartOfWeek, setCurrentDate } from "@/features/date/slice";
+import DateTime from "lib/date";
 
 export interface ActiveState {
   view: "day" | "week";

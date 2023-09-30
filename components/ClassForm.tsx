@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState, MouseEvent, FormEvent, HTMLAttributes } from "react";
-import { DateTime } from "luxon";
 import { faTrashCan, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,6 +18,7 @@ import { ClassType, Student } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { convertFormInputs, parseClassType } from "@/lib/utils";
+import DateTime from "lib/date";
 
 export interface ClassFormInputs {
   type: ClassType;

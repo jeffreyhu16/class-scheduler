@@ -1,6 +1,7 @@
 import useSWR, { Fetcher } from "swr";
 import axios from "axios";
-import { DateTime, ToObjectOutput } from "luxon";
+import { ToObjectOutput } from "luxon";
+import DateTime from "lib/date";
 
 export interface UseClassesParams {
   startDate: ToObjectOutput | undefined;
