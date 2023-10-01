@@ -1,5 +1,4 @@
-import { DateTime, Settings } from "luxon";
-Settings.defaultZone = "Australia/Victoria";
+import { DateTime } from "luxon";
 
 export const getCurrentDate = () => {
   return DateTime.local().startOf("day").toObject();
@@ -34,5 +33,3 @@ export const getTimeOptions = () => {
   }
   return response;
 };
-
-export default DateTime;

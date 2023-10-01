@@ -5,7 +5,7 @@ import { ClassI } from "@/lib/data/types";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setGlowState } from "@/features/view/slice";
 import { useClasses } from "@/hooks/swr";
-import DateTime from "lib/date";
+import { DateTime } from "luxon";
 
 export interface CalendarQuarterHourProps {
   day?: number;
@@ -18,7 +18,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
   const { calendarView, coach, location, printMode } = useAppSelector((state) => state.views);
 
-  const { classData, isLoading, error, mutate } = useClasses({
+  const { classData, isLoading, error, refetch } = useClasses({
     startDate: calendarView === "week" ? startOfWeek : currentDate,
     day,
     coachId: coach?.id,
@@ -42,7 +42,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
   if (classData.length > 0) {
     // filter startTime //
     startTimeTarget = classData.filter((dayTarget: ClassI) => {
-      const startDateTime = DateTime.fromMillis(dayTarget.startTime);
+      const startDateTime = DateTime.fromMillis(dayTarget.startTime, { zone: "utc" });
       const quarterInterval = startDateTime.minute / 15;
       const startTimeQuarterHour = (startDateTime.hour - 7) * 4 + quarterInterval;
       return startTimeQuarterHour === quarterHour - 1;
@@ -52,8 +52,8 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
 
     // filter midTime //
     midTimeTarget = classData.filter((dayTarget: ClassI) => {
-      const startDateTime = DateTime.fromMillis(dayTarget.startTime);
-      const endDateTime = DateTime.fromMillis(dayTarget.endTime);
+      const startDateTime = DateTime.fromMillis(dayTarget.startTime, { zone: "utc" });
+      const endDateTime = DateTime.fromMillis(dayTarget.endTime, { zone: "utc" });
       const quarterInterval = startDateTime.minute / 15;
       const startTimeQuarterHour = (startDateTime.hour - 7) * 4 + quarterInterval;
 
@@ -76,7 +76,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
 
     // filter endTime //
     endTimeTarget = classData.filter((dayTarget: ClassI) => {
-      const endDateTime = DateTime.fromMillis(dayTarget.endTime);
+      const endDateTime = DateTime.fromMillis(dayTarget.endTime, { zone: "utc" });
       const quarterInterval = endDateTime.minute / 15;
       const endTimeQuarterHour = (endDateTime.hour - 7) * 4 + quarterInterval;
       return endTimeQuarterHour === quarterHour;
@@ -93,8 +93,8 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
   if (isStartTime) {
     classTimeObj = startTimeTarget[0];
     const { startTime, endTime, students } = classTimeObj;
-    startString = DateTime.fromMillis(startTime).toFormat("h:mm");
-    endString = DateTime.fromMillis(endTime).toFormat("h:mm");
+    startString = DateTime.fromMillis(startTime, { zone: "utc" }).toFormat("h:mm");
+    endString = DateTime.fromMillis(endTime, { zone: "utc" }).toFormat("h:mm");
 
     students.forEach((student) => {
       studentNames += student.name + " ";
@@ -206,6 +206,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
           quarterHour={quarterHour}
           toggleForm={() => setIsFormOpen((prev) => !prev)}
           classTimeTarget={classTimeTarget}
+          refetch={refetch}
         />
       )}
 

@@ -1,7 +1,7 @@
 import { ClassFormInputs } from "@/components/ClassForm";
 import { Class, Student, Coach, Location, ClassType } from "@prisma/client";
 import { ClassI, CreateClassProps, UpdateClassProps } from "./data/types";
-import DateTime from "lib/date";
+import { DateTime } from "luxon";
 
 export const getRequestValue = (req: any, domain: string, key: string) => {
   if (req && req[domain]) {
@@ -24,8 +24,8 @@ export const convertClass = (
   return {
     id: c.id,
     type: c.type,
-    startTime: DateTime.fromJSDate(c.startTime).toMillis(),
-    endTime: DateTime.fromJSDate(c.endTime).toMillis(),
+    startTime: DateTime.fromJSDate(c.startTime, { zone: "utc" }).toMillis(),
+    endTime: DateTime.fromJSDate(c.endTime, { zone: "utc" }).toMillis(),
     coachId: c.coachId,
     coach: c.coach,
     students: c.students,

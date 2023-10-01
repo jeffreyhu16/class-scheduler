@@ -1,10 +1,9 @@
 "use client";
 import React, { CSSProperties, useEffect, useState } from "react";
-import { ToObjectOutput } from "luxon";
+import { DateTime, ToObjectOutput } from "luxon";
 import { useAppSelector } from "@/redux/store";
 import { LocationI } from "@/lib/data/types";
 import { getFullWeek } from "@/lib/date";
-import DateTime from "lib/date";
 
 export interface CalendarHeadCourtProps {
   day?: number;

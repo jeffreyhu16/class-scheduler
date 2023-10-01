@@ -18,7 +18,8 @@ import { ClassType, Student } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { convertFormInputs, parseClassType } from "@/lib/utils";
-import DateTime from "lib/date";
+import { DateTime } from "luxon";
+import { KeyedMutator } from "swr";
 
 export interface ClassFormInputs {
   type: ClassType;
@@ -37,6 +38,7 @@ export interface ClassFormProps {
   quarterHour: number;
   toggleForm: () => void;
   classTimeTarget?: ClassI;
+  refetch: KeyedMutator<any>;
 }
 
 const classTypes: ClassType[] = [
@@ -71,7 +73,7 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
   isBreak: false,
 };
 
-export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarget }: ClassFormProps) {
+export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarget, refetch }: ClassFormProps) {
   const router = useRouter();
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
   const { coachData, locationData } = useAppSelector((state) => state.views);
@@ -106,14 +108,14 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
 
   if (classTimeTarget) {
     const { startTime, endTime } = classTimeTarget;
-    startDateTime = DateTime.fromMillis(startTime);
-    endDateTime = DateTime.fromMillis(endTime);
+    startDateTime = DateTime.fromMillis(startTime, { zone: "utc" });
+    endDateTime = DateTime.fromMillis(endTime, { zone: "utc" });
   } else if (startOfWeek && day) {
-    dateObj = DateTime.fromObject(startOfWeek);
+    dateObj = DateTime.fromObject(startOfWeek, { zone: "utc" });
     startDateTime = dateObj.plus({ days: day - 1, hours: hour, minutes: min });
     endDateTime = dateObj.plus({ days: day - 1, hours: hour + 1, minutes: min });
   } else if (currentDate && !day) {
-    dateObj = DateTime.fromObject(currentDate);
+    dateObj = DateTime.fromObject(currentDate, { zone: "utc" });
     startDateTime = dateObj.set({ hour: hour, minute: min });
     endDateTime = dateObj.set({ hour: hour + 1, minute: min });
   }
@@ -159,8 +161,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     try {
       await axios.delete(`/api/class?id=${classTimeTarget.id}`);
 
+      refetch();
       toggleForm();
-      router.refresh();
     } catch (err) {
       console.log(err);
     }
@@ -179,8 +181,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
         body: JSON.stringify(body),
       });
 
+      refetch();
       toggleForm();
-      router.refresh();
     } catch (err) {
       console.log(err);
     }
@@ -190,8 +192,8 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
     if (inputDate.startDate) {
       const { startDate, endDate, startTimeString, endTimeString } = inputDate;
       const format = "dd/MM/yyyy h:mm a";
-      const startTime = DateTime.fromFormat(`${startDate} ${startTimeString}`, format).toMillis();
-      const endTime = DateTime.fromFormat(`${endDate} ${endTimeString}`, format).toMillis();
+      const startTime = DateTime.fromFormat(`${startDate} ${startTimeString}`, format, { zone: "utc" }).toMillis();
+      const endTime = DateTime.fromFormat(`${endDate} ${endTimeString}`, format, { zone: "utc" }).toMillis();
 
       setInputs((prev) => ({
         ...prev,
@@ -470,12 +472,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
           label={<FontAwesomeIcon icon={inputs.isBreak ? faLock : faUnlockKeyhole} />}
         />
         <div className="form-button-group">
-          <button
-            className="form-cancel-button"
-            onClick={(e) => {
-              e.preventDefault();
-              toggleForm();
-            }}>
+          <button className="form-cancel-button" onClick={() => toggleForm()}>
             Cancel
           </button>
           {classTimeTarget && (

@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Value } from "react-calendar/dist/cjs/shared/types";
 import { setCurrentDate, setStartOfWeek } from "@/features/date/slice";
-import DateTime from "lib/date";
+import { DateTime } from "luxon";
 
 export default function Sidebar() {
   const { currentDate } = useAppSelector((state) => state.dates);

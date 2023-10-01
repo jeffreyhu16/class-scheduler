@@ -1,7 +1,6 @@
-import useSWR, { Fetcher } from "swr";
+import useSWR from "swr";
 import axios from "axios";
-import { ToObjectOutput } from "luxon";
-import DateTime from "lib/date";
+import { DateTime, ToObjectOutput } from "luxon";
 
 export interface UseClassesParams {
   startDate: ToObjectOutput | undefined;
@@ -12,7 +11,7 @@ export interface UseClassesParams {
 }
 
 export const useClasses = ({ startDate, day, coachId, locationId, courtId }: UseClassesParams) => {
-  const start = startDate ? DateTime.fromObject(startDate).toMillis() : 0;
+  const start = startDate ? DateTime.fromObject(startDate, { zone: "utc" }).toMillis() : 0;
 
   let query = `/api/class/classes?startDate=${start}&day=${day}`;
 
@@ -35,6 +34,6 @@ export const useClasses = ({ startDate, day, coachId, locationId, courtId }: Use
     classData: data,
     isLoading,
     error,
-    mutate,
+    refetch: mutate,
   };
 };
