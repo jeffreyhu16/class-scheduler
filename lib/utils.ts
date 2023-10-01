@@ -24,8 +24,8 @@ export const convertClass = (
   return {
     id: c.id,
     type: c.type,
-    startTime: DateTime.fromJSDate(c.startTime, { zone: "utc" }).toMillis(),
-    endTime: DateTime.fromJSDate(c.endTime, { zone: "utc" }).toMillis(),
+    startTime: DateTime.fromJSDate(c.startTime).toMillis(),
+    endTime: DateTime.fromJSDate(c.endTime).toMillis(),
     coachId: c.coachId,
     coach: c.coach,
     students: c.students,

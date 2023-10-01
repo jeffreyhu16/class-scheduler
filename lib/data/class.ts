@@ -11,10 +11,10 @@ export const getClasses = async ({
   locationId,
   courtId,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
-  const start = DateTime.fromMillis(startDate, { zone: "utc" })
+  const start = DateTime.fromMillis(startDate)
     .plus({ days: day - 1 })
     .toJSDate();
-  const end = DateTime.fromJSDate(start, { zone: "utc" }).plus({ days: 1 }).toJSDate();
+  const end = DateTime.fromJSDate(start).plus({ days: 1 }).toJSDate();
 
   try {
     const classes = await prisma.class.findMany({
@@ -145,8 +145,8 @@ export const copyClasses = async ({ copyStart, weeks }: CopyClassParams): Promis
         prisma.class.create({
           data: {
             type: c.type,
-            startTime: DateTime.fromMillis(c.startTime, { zone: "utc" }).plus({ weeks }).toJSDate(),
-            endTime: DateTime.fromMillis(c.endTime, { zone: "utc" }).plus({ weeks }).toJSDate(),
+            startTime: DateTime.fromMillis(c.startTime).plus({ weeks }).toJSDate(),
+            endTime: DateTime.fromMillis(c.endTime).plus({ weeks }).toJSDate(),
             coachId: c.coachId,
             students: {
               connect: c.students.map((student) => ({
