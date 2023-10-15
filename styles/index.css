@@ -313,6 +313,7 @@ h1 {
   position: sticky;
   top: 1em;
   width: calc(100% - 64px);
+  z-index: 1;
 }
 
 .calendar-head-scroll {

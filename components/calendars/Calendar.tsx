@@ -30,9 +30,11 @@ export default function Calendar() {
     <ScrollSync>
       <div id="calendar" className="calendar" style={styles.calendar}>
         <div className="coach-label-container">
-          <div className="coach-label" style={styles.label}>
-            {coach?.name}
-          </div>
+          {coach?.name && (
+            <div className="coach-label" style={styles.label}>
+              {coach.name}
+            </div>
+          )}
         </div>
 
         <div className="calendar-head-sticky">
