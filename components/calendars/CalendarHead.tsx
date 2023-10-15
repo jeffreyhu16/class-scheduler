@@ -32,7 +32,7 @@ export default function CalendarHead() {
     const { key, courtCount } = location;
     const dayCourtHeads = [...Array(location.courtCount)].map((k, i) => {
       const weekStyles: CSSProperties = {
-        opacity: day && glowState.day[day] && glowState.location[key][courtCount] ? "1" : "0",
+        opacity: day && glowState.day[day] && glowState.location[key][courtCount - i] ? "1" : "0",
         width: `calc(100% / ${courtCount})`,
         marginBottom: "0.3em",
       };
