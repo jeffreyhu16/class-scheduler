@@ -6,7 +6,7 @@ import { DateTime } from "luxon";
 export default function CalendarTime() {
   const time = DateTime.local().set({ hour: 7, minute: 0 });
 
-  const { glowState } = useAppSelector((state) => state.views);
+  const glowState = useAppSelector((state) => state.glow);
 
   return (
     <>

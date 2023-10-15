@@ -10,20 +10,6 @@ export interface BreakPointI {
   [breakpoint: number]: boolean;
 }
 
-export interface GlowState {
-  day: boolean[];
-  location: { [key: string]: boolean[] };
-  quarterHour: boolean[];
-}
-
-export interface SetGlowStateProps {
-  dayIndex?: number;
-  location?: string;
-  courtIndex?: number;
-  quarterHourIndex: number;
-  isGlow: boolean;
-}
-
 interface ViewState {
   calendarView: CalendarView;
   coach?: CoachI | null;
@@ -32,18 +18,12 @@ interface ViewState {
   locationData?: LocationI[];
   breakPoint: BreakPointI;
   printMode: boolean;
-  glowState: GlowState;
 }
 
 const initialState: ViewState = {
   calendarView: "week",
   breakPoint: {},
   printMode: false,
-  glowState: {
-    day: [],
-    location: {},
-    quarterHour: [],
-  },
 };
 
 const viewSlice = createSlice({
@@ -71,16 +51,6 @@ const viewSlice = createSlice({
     setPrintMode: (state, action: PayloadAction<boolean>) => {
       state.printMode = action.payload;
     },
-    setGlowState: (state, action: PayloadAction<SetGlowStateProps>) => {
-      const { dayIndex, location, courtIndex, quarterHourIndex, isGlow } = action.payload;
-      if (dayIndex) {
-        state.glowState.day[dayIndex] = isGlow;
-      }
-      if (courtIndex && location) {
-        state.glowState.location[location][courtIndex] = isGlow;
-      }
-      state.glowState.quarterHour[quarterHourIndex] = isGlow;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -94,9 +64,9 @@ const viewSlice = createSlice({
         state.locationData = payload;
         if (payload?.length) {
           state.location = payload[0];
-          payload.forEach((location: LocationI) => {
-            state.glowState.location[location.key] = [];
-          });
+          // payload.forEach((location: LocationI) => {
+          //   state.glowState.location[location.key] = [];
+          // });
         }
       });
   },
@@ -110,7 +80,6 @@ export const {
   setLocationData,
   setBreakPoint,
   setPrintMode,
-  setGlowState,
 } = viewSlice.actions;
 
 export default viewSlice.reducer;

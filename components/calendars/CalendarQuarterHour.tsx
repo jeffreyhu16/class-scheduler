@@ -3,7 +3,7 @@ import { useState } from "react";
 import ClassForm from "../ClassForm";
 import { ClassI } from "@/lib/data/types";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { setGlowState } from "@/features/view/slice";
+import { setGlowState } from "@/features/glow/slice";
 import { useClasses } from "@/hooks/swr";
 import { DateTime } from "luxon";
 

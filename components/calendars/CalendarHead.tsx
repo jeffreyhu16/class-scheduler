@@ -11,8 +11,9 @@ export interface CalendarHeadCourtProps {
 }
 
 export default function CalendarHead() {
+  const glowState = useAppSelector((state) => state.glow);
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
-  const { calendarView, coach, location, locationData, glowState } = useAppSelector((state) => state.views);
+  const { calendarView, coach, location, locationData } = useAppSelector((state) => state.views);
   const [weekData, setWeekData] = useState<{ [key: string]: ToObjectOutput }>();
 
   let i = 0;
