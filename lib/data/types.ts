@@ -43,7 +43,7 @@ export interface LocationI {
 
 export interface GetClassesProps {
   startDate: number;
-  day: number;
+  endDate: number;
   coachId?: string;
   locationId?: string;
   courtId?: number;

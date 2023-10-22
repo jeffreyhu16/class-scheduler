@@ -6,15 +6,13 @@ import { DateTime } from "luxon";
 
 export const getClasses = async ({
   startDate,
-  day,
+  endDate,
   coachId,
   locationId,
   courtId,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
-  const start = DateTime.fromMillis(startDate)
-    .plus({ days: day - 1 })
-    .toJSDate();
-  const end = DateTime.fromJSDate(start).plus({ days: 1 }).toJSDate();
+  const start = DateTime.fromMillis(startDate).toJSDate();
+  const end = DateTime.fromMillis(endDate).toJSDate();
 
   try {
     const classes = await prisma.class.findMany({
@@ -135,7 +133,7 @@ export const copyClasses = async ({ copyStart, weeks }: CopyClassParams): Promis
   try {
     const prevClasses = await getClasses({
       startDate: copyStart,
-      day: weeks * 7,
+      endDate: DateTime.fromMillis(copyStart).plus({ weeks }).toMillis(),
     });
 
     if (!prevClasses) return undefined;

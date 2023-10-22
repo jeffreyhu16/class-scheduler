@@ -18,7 +18,7 @@ export default function CalendarCopy() {
 
     try {
       await axios.post("/api/class/copy", {
-        copyStart: DateTime.fromObject(startOfWeek).toMillis(),
+        copyStart: DateTime.fromObject(startOfWeek).minus({ weeks }).toMillis(),
         weeks,
       });
 

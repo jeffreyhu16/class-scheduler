@@ -11,9 +11,11 @@ export interface UseClassesParams {
 }
 
 export const useClasses = ({ startDate, day, coachId, locationId, courtId }: UseClassesParams) => {
-  const start = startDate ? DateTime.fromObject(startDate, { zone: "utc" }).toMillis() : 0;
+  const startDateTime = startDate ? DateTime.fromObject(startDate, { zone: "utc" }) : undefined;
+  const start = startDateTime ? startDateTime.plus({ days: day - 1 }).toMillis() : 0;
+  const end = startDateTime ? startDateTime.plus({ days: day }).toMillis() : 0;
 
-  let query = `/api/class/classes?startDate=${start}&day=${day}`;
+  let query = `/api/class/classes?startDate=${start}&endDate=${end}`;
 
   if (coachId) {
     query = query.concat(`&coachId=${coachId}`);
