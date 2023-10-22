@@ -2,13 +2,12 @@
 import React, { CSSProperties } from "react";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useAppSelector } from "@/redux/store";
 import { DateTime } from "luxon";
+import { mutate, Arguments } from "swr";
 
 export default function CalendarCopy() {
-  const router = useRouter();
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const { startOfWeek } = useAppSelector((state) => state.dates);
   const { calendarView, coach } = useAppSelector((state) => state.views);
@@ -22,7 +21,7 @@ export default function CalendarCopy() {
         weeks,
       });
 
-      router.refresh();
+      mutate((key: Arguments) => Array.isArray(key) && key[0].startsWith("/api/class"));
     } catch (err) {
       console.log(err);
     }
