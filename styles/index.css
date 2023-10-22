@@ -504,10 +504,7 @@ h1 {
   z-index: 1;
 }
 
-.calendar-class-info-coach-name,
-.calendar-class-info-class-period,
-.calendar-class-info-location,
-.calendar-class-info-student-name {
+.calendar-class-info-details {
   margin-bottom: 0.5rem;
 }
 

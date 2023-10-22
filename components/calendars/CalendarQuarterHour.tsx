@@ -148,7 +148,10 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
     },
     classInfo: {
       top: printMode ? "0.1em" : "0.5em",
-      fontSize: printMode ? "1.25rem" : "1rem",
+      fontSize: printMode ? "1.25rem" : calendarView === "week" && coach == null ? "0.875rem" : "1rem",
+    },
+    classInfoDetails: {
+      marginBottom: calendarView === "week" && coach == null ? "0.25rem" : "0.5rem",
     },
   };
 
@@ -189,13 +192,19 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
         {isStartTime && (
           <div className="calendar-class-info" style={styles.classInfo}>
             {classTimeObj && coach === null && (
-              <div className="calendar-class-info-coach-name">{classTimeObj.coach.name}</div>
+              <div className="calendar-class-info-details" style={styles.classInfoDetails}>
+                {classTimeObj.coach.name}
+              </div>
             )}
-            <div className="calendar-class-info-class-period">{`${startString}-${endString}`}</div>
-            <div className="calendar-class-info-location">
+            <div
+              className="calendar-class-info-details"
+              style={styles.classInfoDetails}>{`${startString}-${endString}`}</div>
+            <div className="calendar-class-info-details" style={styles.classInfoDetails}>
               {classTimeObj && showLocation && classTimeObj.location.name}
             </div>
-            <div className="calendar-class-info-student-name">{classTimeObj && studentNames}</div>
+            <div className="calendar-class-info-details" style={styles.classInfoDetails}>
+              {classTimeObj && studentNames}
+            </div>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 "use client";
 import { CSSProperties, useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
-import { DateTime, ToObjectOutput} from "luxon";
+import { DateTime, ToObjectOutput } from "luxon";
 import { faBars, faAngleLeft, faAngleRight, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
@@ -24,7 +24,7 @@ export interface HoverState {
 
 export default function HeaderNav() {
   const dispatch = useAppDispatch();
-  const { calendarView, locationData, coachData, printMode } = useAppSelector((state) => state.views);
+  const { calendarView, locationData, coachData, coach, location } = useAppSelector((state) => state.views);
   const { startOfWeek, currentDate } = useAppSelector((state) => state.dates);
 
   const [activeState, setActiveState] = useState<ActiveState>({
@@ -87,18 +87,29 @@ export default function HeaderNav() {
   }
 
   const createPdf = async () => {
+    dispatch(setPrintMode(true));
     try {
       const calendar = document.getElementById("calendar");
       const canvas = await html2canvas(calendar!);
-
       const imgData = canvas.toDataURL("image/png");
+
       const pdf = new jsPDF({ unit: "mm" });
-      pdf.addImage(imgData, "JPEG", 0, 0, 210, 330);
-      pdf.save("calendar.pdf");
-      dispatch(setPrintMode(false));
+      pdf.addImage(imgData, "JPEG", 0, 0, 310, 300);
+
+      let fileName = `week${DateTime.local().weekNumber}.pdf`;
+
+      if (location) {
+        fileName = `${location.name}_` + fileName;
+      }
+      if (coach) {
+        fileName = `${coach.name}_` + fileName;
+      }
+
+      pdf.save(fileName);
     } catch (error) {
       console.log(error);
     }
+    dispatch(setPrintMode(false));
   };
 
   const castBackground = (view: "day" | "week") => {
@@ -109,12 +120,6 @@ export default function HeaderNav() {
     if (activeState.view !== view && hoverState[view]) background = "#0055a4";
     return background;
   };
-
-  useEffect(() => {
-    if (!printMode) return;
-
-    createPdf();
-  }, [printMode]);
 
   const activeShadow = "0 0 1rem 0 rgba(255, 255, 255, 0.4)";
   const defaultShadow = "0 0 1rem 0 rgba(0, 0, 0, 0.3)";
@@ -174,11 +179,7 @@ export default function HeaderNav() {
       <div className="header-right-group">
         <div className="header-action-group">
           <CalendarCopy />
-          <FontAwesomeIcon
-            icon={faUpRightFromSquare}
-            className="icon-export"
-            onClick={() => dispatch(setPrintMode(true))}
-          />
+          <FontAwesomeIcon icon={faUpRightFromSquare} className="icon-export" onClick={() => createPdf()} />
         </div>
         {currentDate && (
           <div className="header-date">
