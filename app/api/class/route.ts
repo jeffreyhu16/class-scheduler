@@ -32,6 +32,10 @@ export async function PUT(req: Request) {
   if (!checkRequestBody<UpdateClassProps>(requestBody, ["id"])) {
     return NextResponse.error();
   }
+  if (requestBody.coachId === "") {
+    const coachNA = await getCoach({ name: { not: "N/A" } });
+    requestBody.coachId = coachNA?.id || "";
+  }
   return NextResponse.json(await updateClass(requestBody));
 }
 

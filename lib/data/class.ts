@@ -89,7 +89,7 @@ export const updateClass = async ({
   startTime,
   endTime,
   coachId,
-  studentIds,
+  students,
   locationId,
   courtId,
   note,
@@ -106,8 +106,8 @@ export const updateClass = async ({
         endTime: endTime ? new Date(endTime) : undefined,
         coachId,
         students: {
-          connect: studentIds?.map((id) => ({
-            id,
+          connect: students?.map((student) => ({
+            id: student.id,
           })),
         },
         locationId,
