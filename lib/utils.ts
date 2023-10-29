@@ -42,7 +42,7 @@ export const convertFormInputs = (form: ClassFormInputs, editClassId?: string): 
     type: form.type,
     startTime: form.startTime,
     endTime: form.endTime,
-    coachId: form.coach.id,
+    coachId: form.type !== "BLOCK" ? form.coach.id : "",
     students: form.students,
     locationId: form.location.id,
     courtId: form.courtId,

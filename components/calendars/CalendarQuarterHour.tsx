@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import ClassForm from "../ClassForm";
+import { ClassType } from "@prisma/client";
 import { ClassI } from "@/lib/data/types";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setGlowState } from "@/features/glow/slice";
@@ -130,7 +131,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
     borderBottom = borderDefault;
   }
 
-  if (isBreak || (isBreak && isHover)) {
+  if (isBreak || classTimeTarget?.type === ClassType.BLOCK) {
     backgroundColor = "rgba(201,229,255,0.5)";
   } else if (!isFree || isHover) {
     backgroundColor = "#c9e5ff";
@@ -203,7 +204,7 @@ export default function CalendarQuarterHour({ day = 0, courtId, locationId, quar
               {classTimeObj && showLocation && classTimeObj.location.name}
             </div>
             <div className="calendar-class-info-details" style={styles.classInfoDetails}>
-              {classTimeObj && studentNames}
+              {classTimeObj?.type === ClassType.BLOCK ? classTimeObj.note : studentNames}
             </div>
           </div>
         )}

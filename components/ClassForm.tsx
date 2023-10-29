@@ -16,7 +16,6 @@ import { getTimeOptions } from "@/lib/date";
 import { useAppSelector } from "@/redux/store";
 import { ClassType, Student } from "@prisma/client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { convertFormInputs, parseClassType } from "@/lib/utils";
 import { DateTime } from "luxon";
 import { KeyedMutator } from "swr";
@@ -47,6 +46,7 @@ const classTypes: ClassType[] = [
   ClassType.YOUNG_PRIVATE,
   ClassType.YOUNG_GROUP,
   ClassType.TRAINING,
+  ClassType.BLOCK,
 ];
 
 const DEFAULT_CLASS_FORM: ClassFormInputs = {
@@ -57,8 +57,6 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
     id: "",
     name: "",
     payRate: null,
-    students: [],
-    classes: [],
   },
   students: [],
   location: {
@@ -66,7 +64,6 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
     key: "",
     name: "",
     courtCount: 0,
-    classes: [],
   },
   courtId: 1,
   note: "",
@@ -74,7 +71,6 @@ const DEFAULT_CLASS_FORM: ClassFormInputs = {
 };
 
 export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarget, refetch }: ClassFormProps) {
-  const router = useRouter();
   const { currentDate, startOfWeek } = useAppSelector((state) => state.dates);
   const { coachData, locationData } = useAppSelector((state) => state.views);
 
@@ -334,7 +330,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
                 <Chip {...getTagProps({ index })} key={option} label={parseClassType(option)} />
               ))
             }
-            renderInput={(params) => <TextField {...params} label="Class Type" variant="filled" />}
+            renderInput={(params) => <TextField {...params} label="Type" variant="filled" />}
             value={inputs.type}
             onChange={(e, value) =>
               setInputs((prev) => ({
@@ -345,10 +341,38 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
             size="small"
             autoHighlight
           />
+          {inputs.type !== "BLOCK" && (
+            <Autocomplete
+              options={coachData || []}
+              isOptionEqualToValue={(option, value) => true}
+              getOptionLabel={(option: CoachI) => option.name}
+              renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
+                <li {...props} key={option.id}>
+                  {option.name}
+                </li>
+              )}
+              renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
+                tagValue.map((option, index) => (
+                  <Chip {...getTagProps({ index })} key={option.id} label={option.name} />
+                ))
+              }
+              renderInput={(params) => <TextField {...params} label="Coach" variant="filled" />}
+              value={inputs.coach}
+              onChange={(e, value) =>
+                setInputs((prev) => ({
+                  ...prev,
+                  ...(value && { coach: value }),
+                }))
+              }
+              size="small"
+              autoHighlight
+            />
+          )}
+        </div>
+        {inputs.type !== "BLOCK" && (
           <Autocomplete
-            options={coachData || []}
-            isOptionEqualToValue={(option, value) => true}
-            getOptionLabel={(option: CoachI) => option.name}
+            options={studentOptions || []}
+            getOptionLabel={(option) => option.name}
             renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
               <li {...props} key={option.id}>
                 {option.name}
@@ -357,41 +381,19 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
             renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
               tagValue.map((option, index) => <Chip {...getTagProps({ index })} key={option.id} label={option.name} />)
             }
-            renderInput={(params) => <TextField {...params} label="Coach" variant="filled" />}
-            value={inputs.coach}
-            onChange={(e, value) =>
+            renderInput={(params) => <TextField {...params} label="Student" variant="filled" />}
+            value={inputs.students}
+            onChange={(e, values) =>
               setInputs((prev) => ({
                 ...prev,
-                ...(value && { coach: value }),
+                students: values,
               }))
             }
             size="small"
             autoHighlight
+            multiple
           />
-        </div>
-        <Autocomplete
-          options={studentOptions || []}
-          getOptionLabel={(option) => option.name}
-          renderOption={(props: HTMLAttributes<HTMLLIElement>, option) => (
-            <li {...props} key={option.id}>
-              {option.name}
-            </li>
-          )}
-          renderTags={(tagValue, getTagProps: AutocompleteRenderGetTagProps) =>
-            tagValue.map((option, index) => <Chip {...getTagProps({ index })} key={option.id} label={option.name} />)
-          }
-          renderInput={(params) => <TextField {...params} label="Student" variant="filled" />}
-          value={inputs.students}
-          onChange={(e, values) =>
-            setInputs((prev) => ({
-              ...prev,
-              students: values,
-            }))
-          }
-          size="small"
-          autoHighlight
-          multiple
-        />
+        )}
         <div className="form-double">
           <Autocomplete
             options={locationData || []}
@@ -462,7 +464,7 @@ export default function ClassForm({ day, quarterHour, toggleForm, classTimeTarge
               onChange={(e) =>
                 setInputs((prev) => ({
                   ...prev,
-                  isLeave: e.target.checked,
+                  isBreak: e.target.checked,
                 }))
               }
               color="default"
