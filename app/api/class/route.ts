@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClass, updateClass, deleteClass } from "@/lib/data/class";
 import { CreateClassProps, UpdateClassProps } from "@/lib/data/types";
 import { checkRequestBody } from "@/lib/utils";
+import { getCoach } from "@/lib/data/coach";
 
 export async function POST(req: Request) {
   const requestBody = await req.json();
@@ -18,6 +19,10 @@ export async function POST(req: Request) {
     ])
   ) {
     return NextResponse.error();
+  }
+  if (requestBody.coachId === "") {
+    const coachNA = await getCoach({ name: { not: "N/A" } });
+    requestBody.coachId = coachNA?.id || "";
   }
   return NextResponse.json(await createClass(requestBody));
 }

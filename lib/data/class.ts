@@ -1,4 +1,4 @@
-import { Class, Student } from "@prisma/client";
+import { Prisma, Class } from "@prisma/client";
 import { prisma } from "../prisma";
 import { ClassI, CopyClassParams, CreateClassProps, GetClassesProps, UpdateClassProps } from "./types";
 import { convertClass } from "../utils";
@@ -10,17 +10,24 @@ export const getClasses = async ({
   coachId,
   locationId,
   courtId,
+  includeBlocks = true,
 }: GetClassesProps): Promise<ClassI[] | undefined> => {
   const start = DateTime.fromMillis(startDate).toJSDate();
   const end = DateTime.fromMillis(endDate).toJSDate();
+
+  const coachFilter: Prisma.Enumerable<Prisma.CoachWhereInput> = [{ id: coachId }];
+
+  if (includeBlocks) {
+    coachFilter.push({ name: "N/A" });
+  }
 
   try {
     const classes = await prisma.class.findMany({
       where: {
         startTime: { gt: start, lt: end },
-        coachId,
         locationId,
         courtId,
+        coach: { OR: coachFilter },
       },
       include: {
         students: true,

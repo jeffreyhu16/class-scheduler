@@ -61,4 +61,5 @@ enum ClassType {
   ADULT_PRIVATE
   ADULT_GROUP
   TRAINING
+  BLOCK
 }

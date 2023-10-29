@@ -1,4 +1,4 @@
-import { StudentType, ClassType, Coach, Location, Student, Class } from "@prisma/client";
+import { StudentType, ClassType, Coach, Location, Student, Class, Prisma } from "@prisma/client";
 
 export interface StudentI {
   id: string;
@@ -47,6 +47,7 @@ export interface GetClassesProps {
   coachId?: string;
   locationId?: string;
   courtId?: number;
+  includeBlocks?: boolean;
 }
 
 export interface CreateClassProps {
@@ -79,4 +80,8 @@ export interface UpdateClassProps {
 export interface CopyClassParams {
   copyStart: number;
   weeks: number;
+}
+
+export interface GetCoachParams {
+  name?: Prisma.StringFilter;
 }
