@@ -1,5 +1,5 @@
 "use client";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import Dropdown from "./Dropdown";
 import { DateTime, ToObjectOutput } from "luxon";
 import { faBars, faAngleLeft, faAngleRight, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,7 @@ import CalendarCopy from "./calendars/CalendarCopy";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { CalendarView, setCalendarView, setLocation, setCoach, setPrintMode } from "@/features/view/slice";
 import { setStartOfWeek, setCurrentDate } from "@/features/date/slice";
+import MobileNav from "./MobileNav";
 
 export interface ActiveState {
   view: "day" | "week";
@@ -33,6 +34,7 @@ export default function HeaderNav() {
     coach: 1,
   });
   const [hoverState, setHoverState] = useState<HoverState>({ day: false, week: false });
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
 
   let currentDay, day1, day7, month, year;
   let nextDay: ToObjectOutput, prevDay: ToObjectOutput, nextWeek: ToObjectOutput, prevWeek: ToObjectOutput;
@@ -137,7 +139,7 @@ export default function HeaderNav() {
   return (
     <div className="header-nav">
       <div className="header-left-group">
-        <div className="header-nav-dropdown">
+        <div className="header-nav-dropdown" onClick={() => setIsMobileNavOpen((prev) => !prev)}>
           <FontAwesomeIcon icon={faBars} className="icon-nav-dropdown" />
         </div>
 
@@ -197,6 +199,17 @@ export default function HeaderNav() {
           </div>
         </div>
       </div>
+
+      {isMobileNavOpen && (
+        <MobileNav
+          onClose={setIsMobileNavOpen}
+          toggleView={toggleView}
+          dayStyles={dayStyles}
+          weekStyles={weekStyles}
+          activeState={activeState}
+          setActiveState={setActiveState}
+        />
+      )}
     </div>
   );
 }

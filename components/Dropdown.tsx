@@ -10,10 +10,11 @@ export interface DropdownProps {
   label: string;
   active: ActiveState;
   listData: ListItem[];
+  isMobile?: boolean;
   setActive: Dispatch<SetStateAction<ActiveState>>;
 }
 
-export default function Dropdown({ label, listData, active, setActive }: DropdownProps) {
+export default function Dropdown({ label, listData, active, isMobile, setActive }: DropdownProps) {
   const [isOn, setIsOn] = useState<boolean>(false);
   const [hoverIndex, setHoverIndex] = useState<number>(-1);
 
@@ -62,7 +63,10 @@ export default function Dropdown({ label, listData, active, setActive }: Dropdow
   };
 
   return (
-    <button className="dropdown-menu" disabled={listData.length <= 1} onClick={() => setIsOn((prev) => !prev)}>
+    <button
+      className={`dropdown-menu ${isMobile ? "mobile-nav-option" : ""}`}
+      disabled={listData.length <= 1}
+      onClick={() => setIsOn((prev) => !prev)}>
       <div className="dropdown-menu-label">{label}</div>
       <FontAwesomeIcon icon={faCaretDown} className="icon-caret-down" />
       <div className="dropdown-menu-list" style={listStyles}>
