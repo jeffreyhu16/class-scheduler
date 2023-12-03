@@ -1,8 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Provider } from "react-redux";
-import { getCurrentDate, getStartOfWeek } from "@/lib/date";
-import { setStartOfWeek, setCurrentDate } from "@/features/date/slice";
 import { setBreakPoint } from "@/features/view/slice";
 import { getCoaches, getLocations } from "@/features/view/thunks";
 import { Backdrop, CircularProgress } from "@mui/material";

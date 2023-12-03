@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Calendar from "./calendars/Calendar";
 import Sidebar from "./Sidebar";

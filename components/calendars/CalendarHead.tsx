@@ -1,4 +1,3 @@
-"use client";
 import React, { CSSProperties, useEffect, useState } from "react";
 import { DateTime, ToObjectOutput } from "luxon";
 import { useAppSelector } from "@/redux/store";

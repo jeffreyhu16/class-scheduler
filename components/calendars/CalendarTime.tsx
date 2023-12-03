@@ -1,4 +1,3 @@
-"use client"
 import React from "react";
 import { useAppSelector } from "@/redux/store";
 import { DateTime } from "luxon";

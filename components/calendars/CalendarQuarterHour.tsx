@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import ClassForm from "../ClassForm";
 import { ClassType } from "@prisma/client";

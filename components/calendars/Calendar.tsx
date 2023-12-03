@@ -1,4 +1,3 @@
-"use client";
 import React, { CSSProperties } from "react";
 import CalendarHead from "./CalendarHead";
 import CalendarTime from "./CalendarTime";

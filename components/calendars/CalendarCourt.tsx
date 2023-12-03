@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import CalendarQuarterHour from "./CalendarQuarterHour";
 import { LocationI } from "@/lib/data/types";

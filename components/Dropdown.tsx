@@ -1,4 +1,3 @@
-"use client";
 import { useState, CSSProperties, Dispatch, SetStateAction } from "react";
 import { setCalendarView, setLocation, setCoach, ListItem } from "@/features/view/slice";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";

@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState, MouseEvent, FormEvent, HTMLAttributes } from "react";
 import { faTrashCan, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

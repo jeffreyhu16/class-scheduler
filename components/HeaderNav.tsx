@@ -1,4 +1,3 @@
-"use client";
 import { CSSProperties, useState } from "react";
 import Dropdown from "./Dropdown";
 import { DateTime, ToObjectOutput } from "luxon";

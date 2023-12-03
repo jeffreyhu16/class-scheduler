@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import CalendarCourt from "./CalendarCourt";
 import CalendarQuarterHour from "./CalendarQuarterHour";

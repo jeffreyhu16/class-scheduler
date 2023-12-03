@@ -1,4 +1,3 @@
-"use client";
 import React, { CSSProperties } from "react";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

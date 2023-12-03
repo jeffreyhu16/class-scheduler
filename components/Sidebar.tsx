@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Calendar from "react-calendar";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
