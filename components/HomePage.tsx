@@ -4,13 +4,13 @@ import { Provider } from "react-redux";
 import { setBreakPoint } from "@/features/view/slice";
 import { getCoaches, getLocations } from "@/features/view/thunks";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { store, useAppDispatch, useAppSelector } from "@/redux/store";
+import { store, useAppDispatch } from "@/redux/store";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 import Header from "./Header";
 import Main from "./Main";
 
-export default function HomePage() {
+const HomePage = () => {
   const dispatch = useAppDispatch();
-  const { appState } = useAppSelector((state) => state.classes);
 
   useEffect(() => {
     dispatch(getCoaches());
@@ -43,4 +43,6 @@ export default function HomePage() {
       </Backdrop>
     </Provider>
   );
-}
+};
+
+export default withPageAuthRequired(HomePage);
