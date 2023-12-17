@@ -1,7 +1,13 @@
 import { CSSProperties, useState } from "react";
 import Dropdown from "./Dropdown";
 import { DateTime, ToObjectOutput } from "luxon";
-import { faBars, faAngleLeft, faAngleRight, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faAngleLeft,
+  faAngleRight,
+  faUpRightFromSquare,
+  faPersonWalkingArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
@@ -181,6 +187,9 @@ export default function HeaderNav() {
         <div className="header-action-group">
           <CalendarCopy />
           <FontAwesomeIcon icon={faUpRightFromSquare} className="icon-export" onClick={() => createPdf()} />
+          <a href="/api/auth/logout">
+            <FontAwesomeIcon icon={faPersonWalkingArrowRight} className="icon-logout" color="white" />
+          </a>
         </div>
         {currentDate && (
           <div className="header-date">
