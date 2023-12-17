@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { CalendarView, setCalendarView, setLocation, setCoach, setPrintMode } from "@/features/view/slice";
 import { setStartOfWeek, setCurrentDate } from "@/features/date/slice";
 import MobileNav from "./MobileNav";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export interface ActiveState {
   view: "day" | "week";
@@ -40,6 +41,8 @@ export default function HeaderNav() {
   });
   const [hoverState, setHoverState] = useState<HoverState>({ day: false, week: false });
   const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
+
+  const { user } = useUser();
 
   let currentDay, day1, day7, month, year;
   let nextDay: ToObjectOutput, prevDay: ToObjectOutput, nextWeek: ToObjectOutput, prevWeek: ToObjectOutput;
@@ -177,7 +180,10 @@ export default function HeaderNav() {
 
           <Dropdown
             label="coach"
-            listData={[{ name: "all" }, ...(coachData?.map((coach) => ({ name: coach.name })) || [])]}
+            listData={[
+              ...(user?.isAdmin ? [{ name: "all" }] : []),
+              ...(coachData?.map((coach) => ({ name: coach.name })) || []),
+            ]}
             active={activeState}
             setActive={setActiveState}
           />
