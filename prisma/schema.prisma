@@ -21,6 +21,7 @@ model Student {
 model Coach {
   id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String
+  email         String        @unique
   payRate       Int?
   students      Student[]
   classes       Class[]

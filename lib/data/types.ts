@@ -84,4 +84,5 @@ export interface CopyClassParams {
 
 export interface GetCoachParams {
   name?: Prisma.StringFilter;
+  email?: Prisma.StringFilter;
 }
