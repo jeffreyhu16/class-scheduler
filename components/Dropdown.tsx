@@ -62,31 +62,34 @@ export default function Dropdown({ label, listData, active, isMobile, setActive 
   };
 
   return (
-    <button
-      className={`dropdown-menu ${isMobile ? "mobile-nav-option" : ""}`}
-      disabled={listData.length <= 1}
-      onClick={() => setIsOn((prev) => !prev)}>
-      <div className="dropdown-menu-label">{label}</div>
-      <FontAwesomeIcon icon={faCaretDown} className="icon-caret-down" />
-      <div className="dropdown-menu-list" style={listStyles}>
-        {listData.map((item, i) => {
-          const isAccent = hoverIndex === i || active[label as keyof ActiveState] === i;
-          return (
-            <div
-              key={item.name}
-              className="dropdown-menu-list-item"
-              onClick={() => handleClick(item.name, i)}
-              onMouseEnter={() => setHoverIndex(i)}
-              onMouseLeave={() => setHoverIndex(-1)}
-              style={{
-                backgroundColor: isAccent ? "#c9e5ff" : "#004b8f",
-                color: isAccent ? "#00182f" : "#fff",
-              }}>
-              {item.name}
-            </div>
-          );
-        })}
-      </div>
-    </button>
+    <>
+      {listData.length > 1 && (
+        <button
+          className={`dropdown-menu ${isMobile ? "mobile-nav-option" : ""}`}
+          onClick={() => setIsOn((prev) => !prev)}>
+          <div className="dropdown-menu-label">{label}</div>
+          <FontAwesomeIcon icon={faCaretDown} className="icon-caret-down" />
+          <div className="dropdown-menu-list" style={listStyles}>
+            {listData.map((item, i) => {
+              const isAccent = hoverIndex === i || active[label as keyof ActiveState] === i;
+              return (
+                <div
+                  key={item.name}
+                  className="dropdown-menu-list-item"
+                  onClick={() => handleClick(item.name, i)}
+                  onMouseEnter={() => setHoverIndex(i)}
+                  onMouseLeave={() => setHoverIndex(-1)}
+                  style={{
+                    backgroundColor: isAccent ? "#c9e5ff" : "#004b8f",
+                    color: isAccent ? "#00182f" : "#fff",
+                  }}>
+                  {item.name}
+                </div>
+              );
+            })}
+          </div>
+        </button>
+      )}
+    </>
   );
 }
