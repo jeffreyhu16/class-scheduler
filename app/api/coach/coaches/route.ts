@@ -6,7 +6,7 @@ export const GET = withApiAuthRequired(async (req: NextRequest) => {
   const { user } = (await getSession(req, new NextResponse())) as Session;
 
   // Whitelisted admins are allowed to get all coaches
-  const email = user.isAdmin ? undefined : user.email;
+  const email = user.isAdmin || process.env.DEMO_STATUS === "true" ? undefined : user.email;
 
   return NextResponse.json(await getCoaches({ email }));
 });
