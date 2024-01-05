@@ -12,4 +12,4 @@ yarn dev
 
 ## Deployed Site
 
-https://class-scheduler-qr0ggdm27-jeffreyhu16.vercel.app/
+https://class-scheduler.vercel.app/
